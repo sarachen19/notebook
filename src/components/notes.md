@@ -22,6 +22,11 @@ _onCardsChange_
     _group_
     _onCardsChange_ _count_
     - Card
+      _key_
+      _card_
+      _group_
+      _checklist_
+      _onCardsChange_
     - EditCard
       _card_
       _group_

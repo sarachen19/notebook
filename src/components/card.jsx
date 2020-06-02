@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import OutsideClickHandler from "react-outside-click-handler";
 import EditCard from "./editCard";
 import { useDrag } from "react-dnd";
+import Checklist from "./checklist";
+import { ChecklistSourceBox } from "./checklistSourceBox";
 
 class Card extends Component {
   constructor(props) {
@@ -121,14 +123,14 @@ class Card extends Component {
           <div>
             {this.props.card.checklists.map((checklist, index) => {
               return (
-                <div key={index}>
-                  <p>{checklist.checklistName}</p>
-                  <ul>
-                    {checklist.todo.map((todo, index) => {
-                      return <li key={index}>{todo.text}</li>;
-                    })}
-                  </ul>
-                </div>
+                <ChecklistSourceBox
+                  key={index}
+                  k={index}
+                  card={this.props.card}
+                  group={this.props.group}
+                  checklist={checklist}
+                  onCardsChange={this.props.onCardsChange}
+                />
               );
             })}
           </div>

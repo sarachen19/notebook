@@ -78,7 +78,21 @@ class Checklist extends Component {
     );
   }
   render() {
-    return this.state.addChecklist && <this.ChecklistWithOutsideClick />;
+    if (this.state.addChecklist) {
+      return <this.ChecklistWithOutsideClick />;
+    } else {
+      return (
+        <div>
+          <p>{this.props.checklist.checklistName}</p>
+          <ul>
+            {this.props.checklist.todo.map((todo, index) => {
+              return <li key={index}>{todo.text}</li>;
+            })}
+          </ul>
+        </div>
+      );
+    }
+    //return this.state.addChecklist && <this.ChecklistWithOutsideClick />;
   }
 }
 export default Checklist;
