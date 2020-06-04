@@ -40,7 +40,7 @@ class Card extends Component {
   }
 
   delete(tempCard) {
-    console.log(tempCard);
+    //console.log(tempCard);
     this.props.group.cards = this.props.group.cards.filter(
       (card) => card !== tempCard
     );
@@ -71,7 +71,6 @@ class Card extends Component {
     this.setState({
       newCard: {
         value: "",
-        cardId: "",
         checklists: [],
         labels: [],
         dueDate: "",
@@ -127,7 +126,6 @@ class Card extends Component {
                   key={index}
                   k={index}
                   card={this.props.card}
-                  group={this.props.group}
                   checklist={checklist}
                   onCardsChange={this.props.onCardsChange}
                 />

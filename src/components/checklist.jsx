@@ -10,9 +10,6 @@ class Checklist extends Component {
         key: this.props.card.checklists.length,
         checklistName: "",
         todo: [],
-        cardName: this.props.card.value,
-        cardKey: this.props.card.key,
-        groupKey: this.props.group.key,
       },
       addChecklist: this.props.addChecklist || false,
     };

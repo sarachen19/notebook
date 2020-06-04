@@ -16,7 +16,7 @@ export const GroupTargetBox = ({ k, group, allGroups, onCardsChange }) => {
     type: ItemTypes.GROUP,
   };
   const [{ isOverCurrent, isOver, isHoverTarget }, drop] = useDrop({
-    accept: ItemTypes.CARD,
+    accept: [],
 
     collect: (monitor) => ({
       isHoverTarget: monitor.isOver(),
@@ -25,16 +25,12 @@ export const GroupTargetBox = ({ k, group, allGroups, onCardsChange }) => {
     }),
     hover(item, monitor) {
       //console.log(isOver);
-      console.log(isOverCurrent);
+      //console.log(isOverCurrent);
     },
     drop() {
       return item.group;
     },
   });
 
-  return (
-    <div ref={drop} style={{ backgroundColor: isHoverTarget ? "red" : "grey" }}>
-      {item.group}
-    </div>
-  );
+  return <div ref={drop}>{item.group}</div>;
 };

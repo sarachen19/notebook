@@ -212,7 +212,6 @@ class EditCard extends Component {
           <Checklist
             addChecklist={this.state.addChecklist}
             card={this.props.card}
-            group={this.props.group}
             onCardsChange={this.props.onCardsChange}
             onAddChecklists={this.onAddChecklists}
           />
