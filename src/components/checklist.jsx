@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import OutsideClickHandler from "react-outside-click-handler";
-import AllGroups from "./allGroups";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCheck } from "@fortawesome/free-solid-svg-icons";
+import "bootstrap/dist/css/bootstrap.min.css";
 
 class Checklist extends Component {
   constructor(props) {
@@ -17,28 +19,17 @@ class Checklist extends Component {
     this.ChecklistWithOutsideClick = this.ChecklistWithOutsideClick.bind(this);
     this.checklistInput = React.createRef();
   }
-
-  /*
-  todoSubmit(e) {
-    e.preventDefault();
-    this.setState({
-      todo: [...this.state.todo, this.todoInput.current.value],
+  getFinishedTodo(checklist) {
+    let count = 0;
+    let total = 0;
+    checklist.todo.forEach((todo) => {
+      if (todo.finished === true) {
+        count++;
+      }
+      total++;
     });
-
-    const newChecklist = (
-      <Checklist
-        key={this.props.key}
-        add={false}
-        checklistName={this.state.checklistName}
-        todo={this.state.todo}
-        cardName={this.state.cardName}
-        cardKey={this.state.cardKey}
-      />
-    );
-    this.props.updateCard(this.props.card, newChecklist);
+    return count + "/" + total;
   }
-*/
-
   handleAddChecklistSubmit(e) {
     e.preventDefault();
     this.setState({ addChecklist: false });
@@ -79,13 +70,15 @@ class Checklist extends Component {
       return <this.ChecklistWithOutsideClick />;
     } else {
       return (
-        <div>
-          <p>{this.props.checklist.checklistName}</p>
-          <ul>
+        <div className="d-flex justify-content-right">
+          <p className="mr-auto">{this.props.checklist.checklistName}</p>
+          <p>{this.getFinishedTodo(this.props.checklist)}</p>
+          <FontAwesomeIcon icon={faCheck} />
+          {/*<ul>
             {this.props.checklist.todo.map((todo, index) => {
               return <li key={index}>{todo.text}</li>;
             })}
-          </ul>
+          </ul>*/}
         </div>
       );
     }

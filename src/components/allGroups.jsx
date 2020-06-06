@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Group from "./group";
-import "./main.css";
+import "./allGroups.css";
 import { GroupTargetBox } from "./groupTargetBox";
 
 class AllGroups extends Component {
@@ -41,12 +41,20 @@ class AllGroups extends Component {
   }
 
   onGroupAdd(group) {
-    let temp = this.state.allGroups.groups;
-    temp = [...temp, group];
-    this.setState({
-      allGroups: { groups: temp },
-      add: false,
-    });
+    if (group !== null) {
+      console.log("ll");
+      let temp = this.state.allGroups.groups;
+      temp = [...temp, group];
+      this.setState({
+        allGroups: { groups: temp },
+        add: false,
+      });
+    } else {
+      console.log("ffff");
+      this.setState({
+        add: false,
+      });
+    }
   }
   onCardsChange() {
     this.localStore();
@@ -56,38 +64,41 @@ class AllGroups extends Component {
     const groups = this.state.allGroups.groups;
     const allGroups = groups.map((group, index) => {
       return (
-        <div key={index}>
-          <GroupTargetBox
-            key={index}
-            group={group}
-            allGroups={this.state.allGroups}
-            onCardsChange={this.onCardsChange}
-          />
-        </div>
+        <GroupTargetBox
+          style={{ height: "100%" }}
+          key={index}
+          group={group}
+          allGroups={this.state.allGroups}
+          onCardsChange={this.onCardsChange}
+        />
       );
     });
-    return <div className="d-inline-flex">{allGroups}</div>;
+    return <div className="d-flex">{allGroups}</div>;
   }
 
   render() {
     const AllGroups = this.showAllGroups;
     return (
-      <div>
-        <button
-          onClick={(e) => {
-            e.preventDefault();
-            this.setState({ add: true });
-          }}
-        >
-          Add group
-        </button>
-        {this.state.add && (
-          <Group
-            add={this.state.add}
-            count={this.state.allGroups.groups.length}
-            onGroupAdd={this.onGroupAdd}
-          />
-        )}
+      <div className="d-flex" style={{ height: "100%" }}>
+        <span className="flex-columnx order-1">
+          {!this.state.add && (
+            <button
+              onClick={(e) => {
+                e.preventDefault();
+                this.setState({ add: true });
+              }}
+            >
+              Add group
+            </button>
+          )}
+          {this.state.add && (
+            <Group
+              add={this.state.add}
+              count={this.state.allGroups.groups.length}
+              onGroupAdd={this.onGroupAdd}
+            />
+          )}
+        </span>
         <AllGroups />
       </div>
     );

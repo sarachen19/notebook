@@ -1,7 +1,17 @@
 import React, { Component } from "react";
-
+import OutsideClickHandler from "react-outside-click-handler";
 import Card from "./card";
 import AllCards from "./allCards";
+import Validators from "./validators";
+
+const groupNameStyle = {
+  height: "30px",
+  border: "none",
+  resize: "none",
+  cursor: "default",
+  overflow: "hidden",
+  backgroundColor: "rgb(235, 236, 240)",
+};
 
 class Group extends Component {
   constructor(props) {
@@ -13,47 +23,97 @@ class Group extends Component {
         key: "",
       },
       add: this.props.add || false,
+      showChangeGroupName: false,
     };
 
     this.addGroupSubmit = this.addGroupSubmit.bind(this);
     this.groupNameInput = React.createRef();
+    this.showChangeGroupName = this.showChangeGroupName.bind(this);
+    this.hideChangeGroupName = this.hideChangeGroupName.bind(this);
+    this.txtGroupName = React.createRef();
+    this.submitEditGroupName = this.submitEditGroupName.bind(this);
   }
 
   addGroupSubmit(e) {
     e.preventDefault();
     const name = this.groupNameInput.current.value;
-    let temp = this.state.group;
-    temp.groupName = name;
-    temp.key = this.props.count;
-    this.setState({ group: temp, add: false });
-    this.props.onGroupAdd(this.state.group);
+    if (Validators.isEmpty(name) === false) {
+      let temp = this.state.group;
+      temp.groupName = name;
+      temp.key = this.props.count;
+      this.setState({ group: temp, add: false });
+      this.props.onGroupAdd(this.state.group);
+    }
+  }
+  showChangeGroupName(e) {
+    e.target.select();
+    this.txtGroupName.current.style.height = "5px";
+    this.txtGroupName.current.style.height =
+      this.txtGroupName.current.scrollHeight + "px";
+    this.txtGroupName.current.style.backgroundColor = "white";
+  }
+  hideChangeGroupName() {
+    this.txtGroupName.current.style.height = "30px";
+    this.txtGroupName.current.style.backgroundColor = "rgb(235, 236, 240)";
+  }
+  submitEditGroupName() {
+    const tempName = this.txtGroupName.current.value;
+    if (Validators.isEmpty(tempName) === false) {
+      this.hideChangeGroupName();
+      this.props.group.groupName = tempName;
+      this.props.onCardsChange();
+    } else {
+      //this.hideChangeGroupName();
+    }
+  }
+  auto_grow(element) {
+    console.log(element);
+    element.style.height = "5px";
+    element.style.height = element.scrollHeight + "px";
   }
   render() {
     if (this.state.add) {
       return (
-        <form onSubmit={this.addGroupSubmit}>
-          <input type="text" ref={this.groupNameInput}></input>
-          <button type="submit">Add</button>
-        </form>
+        <OutsideClickHandler
+          onOutsideClick={() => {
+            this.props.onGroupAdd(null);
+          }}
+        >
+          <form onSubmit={this.addGroupSubmit}>
+            <input
+              type="text"
+              ref={this.groupNameInput}
+              defaultValue=""
+            ></input>
+            <br />
+            <button type="submit">Add</button>
+          </form>
+        </OutsideClickHandler>
       );
-    }
-
-    return (
-      <div>
-        <p>{this.props.group.groupName}</p>
-        <AllCards
-          key={this.props.group.key}
-          group={this.props.group}
-          onCardsChange={this.props.onCardsChange}
-        />
-        <Card
-          add={true}
-          count={this.props.group.cards.length}
-          group={this.props.group}
-          onCardsChange={this.props.onCardsChange}
-        />
-      </div>
-    );
+    } else
+      return (
+        <div>
+          <OutsideClickHandler onOutsideClick={this.submitEditGroupName}>
+            <textarea
+              onClick={this.showChangeGroupName}
+              ref={this.txtGroupName}
+              defaultValue={this.props.group.groupName}
+              style={groupNameStyle}
+            ></textarea>
+          </OutsideClickHandler>
+          <AllCards
+            key={this.props.group.key}
+            group={this.props.group}
+            onCardsChange={this.props.onCardsChange}
+          />
+          <Card
+            add={true}
+            count={this.props.group.cards.length}
+            group={this.props.group}
+            onCardsChange={this.props.onCardsChange}
+          />
+        </div>
+      );
   }
 }
 export default Group;

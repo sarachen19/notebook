@@ -86,7 +86,7 @@ export const ChecklistSourceBox = ({ k, card, checklist, onCardsChange }) => {
       targetCard.checklists = [...targetCard.checklists, draggingChecklist];
       onCardsChange();
     },
-    []
+    [onCardsChange]
   );
   //reorder a checklist within a card
   const moveChecklistWithinCard = useCallback(
@@ -97,11 +97,11 @@ export const ChecklistSourceBox = ({ k, card, checklist, onCardsChange }) => {
       card.checklists.splice(targetIndex, 0, draggingChecklist);
       onCardsChange();
     },
-    []
+    [onCardsChange]
   );
   const style = {
-    opacity: isDragging ? 0 : 1,
-    padding: "20px",
+    width: "100%",
+    cursor: isDragging ? "grabbing" : "grab",
   };
 
   drag(drop(ref));

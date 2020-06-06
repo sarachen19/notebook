@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import Card from "./card";
 import { CardSourceBox } from "./cardSourceBox";
 
 class AllCards extends Component {

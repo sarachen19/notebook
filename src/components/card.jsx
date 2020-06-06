@@ -1,10 +1,11 @@
 import React, { Component } from "react";
 import OutsideClickHandler from "react-outside-click-handler";
 import EditCard from "./editCard";
-import { useDrag } from "react-dnd";
-import Checklist from "./checklist";
 import { ChecklistSourceBox } from "./checklistSourceBox";
-
+import Validators from "./validators";
+const style = {
+  width: "100%",
+};
 class Card extends Component {
   constructor(props) {
     super(props);
@@ -24,10 +25,11 @@ class Card extends Component {
       showAddButton: false,
     };
     this.popupEdit = this.popupEdit.bind(this);
-    this.delete = this.delete.bind(this);
+    //this.delete = this.delete.bind(this);
     this.handleEditUpdate = this.handleEditUpdate.bind(this);
-    this.handleAddChange = this.handleAddChange.bind(this);
+    //this.addCardInput = React.createRef();
     this.handleAddSubmit = this.handleAddSubmit.bind(this);
+    this.handleAddChange = this.handleAddChange.bind(this);
   }
 
   //click card to edit (show modal)
@@ -38,7 +40,7 @@ class Card extends Component {
   handleEditUpdate(e) {
     this.setState({ edit: e, currentCard: "" });
   }
-
+  /*
   delete(tempCard) {
     //console.log(tempCard);
     this.props.group.cards = this.props.group.cards.filter(
@@ -46,40 +48,43 @@ class Card extends Component {
     );
     this.props.onCardsChange();
   }
+  */
   handleAddChange(event) {
     //update newCard
-    this.setState({
-      newCard: {
-        value: event.target.value,
-        checklists: [],
-        labels: [],
-        dueDate: "",
-        description: "",
-        comments: [],
-        groupKey: this.props.group.key,
-      },
-      showAddButton: true,
-    });
+    if (Validators.isEmpty(event.target.value) === false) {
+      this.setState({
+        newCard: {
+          value: event.target.value,
+          checklists: [],
+          labels: [],
+          dueDate: "",
+          description: "",
+          comments: [],
+          groupKey: this.props.group.key,
+        },
+        showAddButton: true,
+      });
+    }
   }
   handleAddSubmit(event) {
     //add newCard into cards and update cards in Group
     event.preventDefault();
-    let temp = this.state.newCard;
-    this.props.group.cards = [...this.props.group.cards, temp];
-    //const tempCards = [...this.props.cards, this.state.newCard];
-    this.props.onCardsChange();
-    this.setState({
-      newCard: {
-        value: "",
-        checklists: [],
-        labels: [],
-        dueDate: "",
-        description: "",
-        comments: [],
-        groupKey: this.props.group.key,
-      },
-    });
-    this.setState({ showAddButton: false });
+    if (Validators.isEmpty(event.target.firstElementChild.value) === false) {
+      this.props.group.cards.push(this.state.newCard);
+      this.setState({
+        newCard: {
+          value: "",
+          checklists: [],
+          labels: [],
+          dueDate: "",
+          description: "",
+          comments: [],
+          groupKey: "",
+        },
+        showAddButton: false,
+      });
+      this.props.onCardsChange();
+    }
   }
 
   render() {
@@ -102,22 +107,38 @@ class Card extends Component {
             });
           }}
         >
-          <form onSubmit={this.handleAddSubmit}>
-            <input
-              type="text"
-              placeholder="Enter Text"
-              onChange={this.handleAddChange}
-            ></input>
-            {this.state.showAddButton && <button type="submit">Add</button>}
-          </form>
+          {!this.state.showAddButton && (
+            <p
+              onClick={() => {
+                this.setState({
+                  showAddButton: true,
+                });
+              }}
+            >
+              Add another card
+            </p>
+          )}
+          {this.state.showAddButton && (
+            <form onSubmit={this.handleAddSubmit}>
+              <input
+                type="text"
+                placeholder="Enter card name"
+                onChange={this.handleAddChange}
+                defaultValue=""
+              ></input>
+              <br />
+              <button type="submit">Add</button>
+            </form>
+          )}
         </OutsideClickHandler>
       );
     } else if (!this.state.add) {
       return (
-        <div>
+        <div style={style}>
           <p onClick={() => this.popupEdit(this.props.card)}>
             {this.props.card.value}
           </p>
+
           <p>{this.props.card.description}</p>
           <div>
             {this.props.card.checklists.map((checklist, index) => {
@@ -132,7 +153,7 @@ class Card extends Component {
               );
             })}
           </div>
-          <button onClick={() => this.delete(this.props.card)}>delete</button>
+          {/*<button onClick={() => this.delete(this.props.card)}>delete</button>*/}
         </div>
       );
     }

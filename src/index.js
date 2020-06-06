@@ -1,6 +1,5 @@
-import React, { Component } from "react";
+import React from "react";
 import ReactDOM from "react-dom";
-//import "./index.css";
 import * as serviceWorker from "./serviceWorker";
 import AllGroups from "./components/allGroups";
 import { HTML5Backend } from "react-dnd-html5-backend";

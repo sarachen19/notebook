@@ -74,6 +74,7 @@ class NewCard extends Component {
           });
         }}
       >
+        {!this.state.showAddButton && <p>+ Add another card</p>}
         <ShowAddCard />
       </OutsideClickHandler>
     );
@@ -83,9 +84,10 @@ class NewCard extends Component {
       <form onSubmit={this.handleSubmit}>
         <input
           type="text"
-          placeholder="Enter Text"
+          placeholder="Enter card name"
           ref={this.inputChange}
         ></input>
+        <br />
         {this.state.showAddButton && <button type="submit">Add</button>}
       </form>
     );
