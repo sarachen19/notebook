@@ -1,9 +1,12 @@
 import React from "react";
-import { useDrop } from "react-dnd";
+import {useRef} from 'react';
+import { useDrop, useDrag} from "react-dnd";
 import { ItemTypes } from "./ItemTypes";
 import Group from "./group";
 
 export const GroupTargetBox = ({ k, group, allGroups, onCardsChange }) => {
+  const ref = useRef(null);
+
   const item = {
     group: (
       <Group
@@ -15,8 +18,19 @@ export const GroupTargetBox = ({ k, group, allGroups, onCardsChange }) => {
     ),
     type: ItemTypes.GROUP,
   };
+  const [{ isDragging }, drag] = useDrag({
+    item,
+    collect: (monitor) => ({
+      
+      isDragging: monitor.isDragging(),
+    }),
+    end: (item, monitor) => {
+      console.log(item);
+      console.log(monitor.getDropResult());
+    }
+  })
   const [{ isOverCurrent }, drop] = useDrop({
-    accept: [ItemTypes.CARD],
+    accept: [ItemTypes.CARD, ItemTypes.GROUP],
 
     collect: (monitor) => ({
       isHoverTarget: monitor.isOver(),
@@ -29,6 +43,7 @@ export const GroupTargetBox = ({ k, group, allGroups, onCardsChange }) => {
         //if drop handled by card
         return undefined;
       } else {
+        //drop to be handled by group
         return item.group;
       }
     },
@@ -54,8 +69,9 @@ export const GroupTargetBox = ({ k, group, allGroups, onCardsChange }) => {
     margin: "0 4px",
     padding: "2%",
   };
+  drop(drag(ref));
   return (
-    <div ref={drop} style={style}>
+    <div ref={ref} style={style}>
       <div style={contentStyle}>{item.group}</div>
     </div>
   );
