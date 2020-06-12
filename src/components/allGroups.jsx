@@ -17,6 +17,7 @@ class AllGroups extends Component {
     this.showAllGroups = this.showAllGroups.bind(this);
     this.onGroupAdd = this.onGroupAdd.bind(this);
     this.onCardsChange = this.onCardsChange.bind(this);
+    this.onGroupExchange = this.onGroupExchange.bind(this);
     this.localStore = this.localStore.bind(this);
   }
   componentDidMount() {
@@ -39,10 +40,22 @@ class AllGroups extends Component {
     });
     cache = null;
   }
-
+  onGroupExchange(group1, group2) {
+    const k1 = group1.key;
+    const k2 = group2.key;
+    let allGroups = this.state.allGroups.groups;
+    allGroups[k1] = group2;
+    allGroups[k2] = group1;
+    group2.key = k1;
+    group1.key = k2;
+    this.setState({
+      allGroups: { groups: allGroups },
+    });
+    //console.log(allGroups);
+    //this.forceUpdate();
+  }
   onGroupAdd(group) {
     if (group !== null) {
-      console.log("ll");
       let temp = this.state.allGroups.groups;
       temp = [...temp, group];
       this.setState({
@@ -50,7 +63,6 @@ class AllGroups extends Component {
         add: false,
       });
     } else {
-      console.log("ffff");
       this.setState({
         add: false,
       });
@@ -70,6 +82,7 @@ class AllGroups extends Component {
           group={group}
           allGroups={this.state.allGroups}
           onCardsChange={this.onCardsChange}
+          onGroupExchange={this.onGroupExchange}
         />
       );
     });

@@ -32,6 +32,7 @@ class Group extends Component {
     this.hideChangeGroupName = this.hideChangeGroupName.bind(this);
     this.txtGroupName = React.createRef();
     this.submitEditGroupName = this.submitEditGroupName.bind(this);
+    this.getGroupName = this.getGroupName.bind(this);
   }
 
   addGroupSubmit(e) {
@@ -67,9 +68,12 @@ class Group extends Component {
     }
   }
   auto_grow(element) {
-    console.log(element);
     element.style.height = "5px";
     element.style.height = element.scrollHeight + "px";
+  }
+
+  getGroupName() {
+    return this.props.group.groupName;
   }
   render() {
     if (this.state.add) {
@@ -92,15 +96,8 @@ class Group extends Component {
       );
     } else
       return (
-        <div>
-          <OutsideClickHandler onOutsideClick={this.submitEditGroupName}>
-            <textarea
-              onClick={this.showChangeGroupName}
-              ref={this.txtGroupName}
-              defaultValue={this.props.group.groupName}
-              style={groupNameStyle}
-            ></textarea>
-          </OutsideClickHandler>
+        <>
+          <p>{this.props.group.groupName}</p>
           <AllCards
             key={this.props.group.key}
             group={this.props.group}
@@ -112,7 +109,7 @@ class Group extends Component {
             group={this.props.group}
             onCardsChange={this.props.onCardsChange}
           />
-        </div>
+        </>
       );
   }
 }

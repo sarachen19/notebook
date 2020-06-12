@@ -195,7 +195,7 @@ export const CardSourceBox = ({ k, index, card, group, onCardsChange }) => {
   };
 
   return (
-    <div>
+    <>
       <div
         ref={ref}
         style={style}
@@ -221,6 +221,6 @@ export const CardSourceBox = ({ k, index, card, group, onCardsChange }) => {
           <FontAwesomeIcon icon={faWindowClose} />
         </div>
       </div>
-    </div>
+    </>
   );
 };

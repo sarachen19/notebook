@@ -107,8 +107,7 @@ export const ChecklistSourceBox = ({ k, card, checklist, onCardsChange }) => {
   drag(drop(ref));
   return (
     <div ref={ref} style={style}>
-      {" "}
-      {item.checklist}{" "}
+      {item.checklist}
     </div>
   );
 };

@@ -140,19 +140,19 @@ class Card extends Component {
           </p>
 
           <p>{this.props.card.description}</p>
-          <div>
-            {this.props.card.checklists.map((checklist, index) => {
-              return (
-                <ChecklistSourceBox
-                  key={index}
-                  k={index}
-                  card={this.props.card}
-                  checklist={checklist}
-                  onCardsChange={this.props.onCardsChange}
-                />
-              );
-            })}
-          </div>
+
+          {this.props.card.checklists.map((checklist, index) => {
+            return (
+              <ChecklistSourceBox
+                key={index}
+                k={index}
+                card={this.props.card}
+                checklist={checklist}
+                onCardsChange={this.props.onCardsChange}
+              />
+            );
+          })}
+
           {/*<button onClick={() => this.delete(this.props.card)}>delete</button>*/}
         </div>
       );

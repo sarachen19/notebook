@@ -4,7 +4,7 @@ import { CardSourceBox } from "./cardSourceBox";
 class AllCards extends Component {
   render() {
     const group = this.props.group;
-    const cardsList = group.cards.map((card, index) => {
+    return group.cards.map((card, index) => {
       return (
         <CardSourceBox
           key={index}
@@ -16,7 +16,7 @@ class AllCards extends Component {
       );
     });
 
-    return <div>{cardsList}</div>;
+    // return <div>{cardsList}</div>;
   }
 }
 
