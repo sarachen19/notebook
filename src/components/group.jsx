@@ -4,15 +4,6 @@ import Card from "./card";
 import AllCards from "./allCards";
 import Validators from "./validators";
 
-const groupNameStyle = {
-  height: "30px",
-  border: "none",
-  resize: "none",
-  cursor: "default",
-  overflow: "hidden",
-  backgroundColor: "rgb(235, 236, 240)",
-};
-
 class Group extends Component {
   constructor(props) {
     super(props);
@@ -23,16 +14,18 @@ class Group extends Component {
         key: "",
       },
       add: this.props.add || false,
+      edit: false,
       showChangeGroupName: false,
-      tempName: this.props.group !== undefined ? this.props.group.groupName : '',
+      //tempName: this.props.group !== undefined ? this.props.group.groupName : '',
     };
 
     this.addGroupSubmit = this.addGroupSubmit.bind(this);
     this.groupNameInput = React.createRef();
-    this.showChangeGroupName = this.showChangeGroupName.bind(this);
-    this.hideChangeGroupName = this.hideChangeGroupName.bind(this);
+    //this.showChangeGroupName = this.showChangeGroupName.bind(this);
+    //this.hideChangeGroupName = this.hideChangeGroupName.bind(this);
     this.txtGroupName = React.createRef();
     this.submitEditGroupName = this.submitEditGroupName.bind(this);
+    this.edit = this.edit.bind(this);
   }
 
   addGroupSubmit(e) {
@@ -42,35 +35,27 @@ class Group extends Component {
       let temp = this.state.group;
       temp.groupName = name;
       temp.key = this.props.count;
-      this.setState({ group: temp, add: false });
+      this.setState({ group: temp, add: false, });
       this.props.onGroupAdd(this.state.group);
     }
   }
-  showChangeGroupName(e) {
-    e.target.select();
-    this.txtGroupName.current.style.height = "5px";
-    this.txtGroupName.current.style.height =
-      this.txtGroupName.current.scrollHeight + "px";
-    this.txtGroupName.current.style.backgroundColor = "white";
-  }
-  hideChangeGroupName() {
-    this.txtGroupName.current.style.height = "30px";
-    this.txtGroupName.current.style.backgroundColor = "rgb(235, 236, 240)";
-  }
+
+
   submitEditGroupName() {
     const tempName = this.txtGroupName.current.value;
     if (Validators.isEmpty(tempName) === false) {
-      this.hideChangeGroupName();
+      //this.hideChangeGroupName();
       this.props.group.groupName = tempName;
+      this.setState({edit:false});
       this.props.onCardsChange();
     } else {
       //this.hideChangeGroupName();
     }
   }
-  auto_grow(element) {
-    element.style.height = "5px";
-    element.style.height = element.scrollHeight + "px";
+  edit() {
+    this.setState({edit: true});
   }
+
   render() {
     if (this.state.add) {
       return (
@@ -93,16 +78,16 @@ class Group extends Component {
     } else
       return (
         <>
-          <OutsideClickHandler onOutsideClick={this.submitEditGroupName}>
+          {this.state.edit && <OutsideClickHandler onOutsideClick={this.submitEditGroupName}>
             <textarea
-              onClick={this.showChangeGroupName}
+              //onClick={this.showChangeGroupName}
               ref={this.txtGroupName}
-              value={this.state.tempName}
-              onChange={(e)=>this.setState({tempName:e.target.value})}
-              style={groupNameStyle}
+              defaultValue={this.props.group.groupName}
+              //onChange={(e)=>this.setState({tempName:e.target.value})}
+              //style={groupNameStyle}
             ></textarea>
-          </OutsideClickHandler>
-          <p>{this.props.group.groupName}</p>
+          </OutsideClickHandler>}
+          {!this.state.edit && <p onClick={this.edit}>{this.props.group.groupName}</p>}
           <AllCards
             key={this.props.group.key}
             group={this.props.group}
