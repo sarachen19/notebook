@@ -28,7 +28,11 @@ class Checklist extends Component {
       }
       total++;
     });
-    return count + "/" + total;
+    const percentage = parseInt(count / total * 100);
+    const width = percentage + "%";
+    return (<div className="progress" style={{height:"10px"}}>
+    <div className="progress-bar" style={{width:width,height:"10px"}}>{percentage}%</div>
+  </div>);
   }
   handleAddChecklistSubmit(e) {
     e.preventDefault();
@@ -70,10 +74,10 @@ class Checklist extends Component {
       return <this.ChecklistWithOutsideClick />;
     } else {
       return (
-        <div className="d-flex justify-content-right">
-          <p className="mr-auto">{this.props.checklist.checklistName}</p>
-          <p>{this.getFinishedTodo(this.props.checklist)}</p>
-          <FontAwesomeIcon icon={faCheck} />
+        <div className="d-flex-row justify-content-right">
+          <h6 className="mr-auto">{this.props.checklist.checklistName}</h6>
+          {this.getFinishedTodo(this.props.checklist)}
+          {/*<FontAwesomeIcon icon={faCheck} />*/}
           {/*<ul>
             {this.props.checklist.todo.map((todo, index) => {
               return <li key={index}>{todo.text}</li>;

@@ -24,6 +24,7 @@ class Group extends Component {
       },
       add: this.props.add || false,
       showChangeGroupName: false,
+      tempName: this.props.group !== undefined ? this.props.group.groupName : '',
     };
 
     this.addGroupSubmit = this.addGroupSubmit.bind(this);
@@ -96,7 +97,8 @@ class Group extends Component {
             <textarea
               onClick={this.showChangeGroupName}
               ref={this.txtGroupName}
-              value={this.props.group.groupName}
+              value={this.state.tempName}
+              onChange={(e)=>this.setState({tempName:e.target.value})}
               style={groupNameStyle}
             ></textarea>
           </OutsideClickHandler>

@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import OutsideClickHandler from "react-outside-click-handler";
+import "bootstrap/dist/css/bootstrap.min.css";
 import EditCard from "./editCard";
 import { ChecklistSourceBox } from "./checklistSourceBox";
 import Validators from "./validators";
@@ -135,11 +136,11 @@ class Card extends Component {
     } else if (!this.state.add) {
       return (
         <div style={style}>
-          <p onClick={() => this.popupEdit(this.props.card)}>
+          <h4 onClick={() => this.popupEdit(this.props.card)}>
             {this.props.card.value}
-          </p>
+          </h4>
 
-          <p>{this.props.card.description}</p>
+          <h6>{this.props.card.description}</h6>
 
           {this.props.card.checklists.map((checklist, index) => {
             return (

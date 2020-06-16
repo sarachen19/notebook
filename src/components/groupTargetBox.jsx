@@ -33,9 +33,11 @@ export const GroupTargetBox = ({
       isDragging: monitor.isDragging(),
     }),
     end: (item, monitor) => {
-      const group1 = item.group.props.group;
-      const group2 = monitor.getDropResult().props.group;
-      onGroupExchange(group1, group2);
+      if (monitor.getDropResult() != null) {
+        const group1 = item.group.props.group;
+        const group2 = monitor.getDropResult().props.group;
+        onGroupExchange(group1, group2);
+      }
     },
   });
   const [{ isOverCurrent }, drop] = useDrop({

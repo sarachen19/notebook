@@ -42,12 +42,21 @@ class AllGroups extends Component {
   }
   onGroupExchange(group1, group2) {
     const k1 = group1.key;
+    const name1 = group1.groupName;
+    const cards1 = group1.cards;
     const k2 = group2.key;
+    const name2 = group2.groupName;
+    const cards2 = group2.cards;
     let allGroups = this.state.allGroups.groups;
-    allGroups[k1] = group2;
-    allGroups[k2] = group1;
-    group2.key = k1;
-    group1.key = k2;
+    
+    //group2.key = k1;
+    group2.groupName = name1;
+    group2.cards = cards1;
+    //group1.key = k2;
+    group1.groupName = name2;
+    group1.cards = cards2;
+    allGroups[k1] = group1;
+    allGroups[k2] = group2;
     this.setState({
       allGroups: { groups: allGroups },
     });
