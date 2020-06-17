@@ -105,11 +105,12 @@ export const CardSourceBox = ({ k, index, card, group, onCardsChange }) => {
     end: (item, monitor) => {
       console.log("end");
       if (!ref.current || monitor.getDropResult() === null) {
-        console.log("null");
         return;
       }
       //drag across group
+      console.log(monitor.getDropResult());
       if (
+        
         monitor.getDropResult().type.name === "Card" ||
         monitor.getDropResult().type.name === "Group"
       ) {
