@@ -54,6 +54,7 @@ export const GroupTargetBox = ({
         return undefined;
       } else {
         //if a card or a  group is dropped on a group
+       console.log(typeof(item.group));
         return item.group;
       }
     },
