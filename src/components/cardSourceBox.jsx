@@ -103,7 +103,6 @@ export const CardSourceBox = ({ k, index, card, group, onCardsChange }) => {
       isDragging: monitor.isDragging(),
     }),
     end: (item, monitor) => {
-      console.log("end");
       if (!ref.current || monitor.getDropResult() === null) {
         return;
       }
