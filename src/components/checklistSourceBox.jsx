@@ -22,7 +22,7 @@ export const ChecklistSourceBox = ({ k, card, checklist, onCardsChange }) => {
     hover(item, monitor) {
       if (!ref.current) {
         return;
-      }
+      } 
       //if a checklist is being dragged
       if (item.type === "Checklist") {
         const dragChecklist = item.checklist.props.checklist;

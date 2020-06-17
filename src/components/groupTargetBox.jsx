@@ -57,7 +57,7 @@ export const GroupTargetBox = ({
       }
     },
   });
-
+ 
   const style = {
     backgroundColor: "#82b74b",
     width: "272px",

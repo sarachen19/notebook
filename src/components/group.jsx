@@ -18,7 +18,7 @@ class Group extends Component {
       showChangeGroupName: false,
       //tempName: this.props.group !== undefined ? this.props.group.groupName : '',
     };
-
+ 
     this.addGroupSubmit = this.addGroupSubmit.bind(this);
     this.groupNameInput = React.createRef();
     //this.showChangeGroupName = this.showChangeGroupName.bind(this);
