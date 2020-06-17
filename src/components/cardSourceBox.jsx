@@ -103,7 +103,9 @@ export const CardSourceBox = ({ k, index, card, group, onCardsChange }) => {
       isDragging: monitor.isDragging(),
     }),
     end: (item, monitor) => {
+      console.log("end");
       if (!ref.current || monitor.getDropResult() === null) {
+        console.log("null");
         return;
       }
       //drag across group
@@ -114,6 +116,7 @@ export const CardSourceBox = ({ k, index, card, group, onCardsChange }) => {
         //if dropped on a card
         const dragGroup = item.card.props.group;
         const hoverGroup = monitor.getDropResult().props.group;
+        console.log(hoverGroup);
         if (dragGroup !== hoverGroup) {
           const dragCard = item.card.props;
           const hoverIndex = index;
