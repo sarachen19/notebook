@@ -4,6 +4,10 @@ import { useDrop, useDrag, DragPreviewImage } from "react-dnd";
 import { ItemTypes } from "./ItemTypes";
 import Group from "./group";
 import { groupImage } from "./groupImage";
+import PropTypes from 'prop-types';
+import { prototype } from "react-modal";
+
+
 
 export const GroupTargetBox = ({
   k,
@@ -13,17 +17,15 @@ export const GroupTargetBox = ({
   onGroupExchange,
 }) => {
   const ref = useRef(null);
-
+  const g = <Group
+    key={k}
+    group={group}
+    allGroups={allGroups}
+    onCardsChange={onCardsChange}
+    onGroupExchange={onGroupExchange}
+    />;
   const item = {
-    group: (
-      <Group
-        key={k}
-        group={group}
-        allGroups={allGroups}
-        onCardsChange={onCardsChange}
-        onGroupExchange={onGroupExchange}
-      />
-    ),
+    group: g,
     type: ItemTypes.GROUP,
   };
 
@@ -99,4 +101,8 @@ export const GroupTargetBox = ({
       </div>
     </div>
   );
+};
+GroupTargetBox.propTypes = {
+  group:PropTypes.object,
+  g:PropTypes.instanceOf(Group),
 };
