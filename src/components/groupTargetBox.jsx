@@ -46,7 +46,7 @@ export const GroupTargetBox = ({
     collect: (monitor) => ({
       isOverCurrent: monitor.isOver({ shallow: true }),
     }),
-
+  
     drop() {
       if (isOverCurrent === false) {
         //if a card is dropped on a card
