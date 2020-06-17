@@ -4,6 +4,9 @@ import * as serviceWorker from "./serviceWorker";
 import AllGroups from "./components/allGroups";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { DndProvider } from "react-dnd";
+import firebase from 'firebase/app';
+import 'firebase/firestore';
+
 
 
 ReactDOM.render(
