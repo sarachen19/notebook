@@ -50,6 +50,7 @@ export const GroupTargetBox = ({
     drop() {
       if (isOverCurrent === false) {
         //if a card is dropped on a card
+        console.log(isOverCurrent);
         return undefined;
       } else {
         //if a card or a  group is dropped on a group
