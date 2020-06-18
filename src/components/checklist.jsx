@@ -31,7 +31,7 @@ class Checklist extends Component {
     const percentage = parseInt(count / total * 100);
     const width = percentage + "%";
     return (<div className="progress" style={{height:"10px"}}>
-    <div className="progress-bar" style={{width:width,height:"10px"}}>{percentage}%</div>
+    <div className="progress-bar bg-warning" style={{width:width,height:"10px"}}>{percentage}%</div>
   </div>);
   }
   handleAddChecklistSubmit(e) {
@@ -72,20 +72,21 @@ class Checklist extends Component {
   render() {
     if (this.state.addChecklist) {
       return <this.ChecklistWithOutsideClick />;
-    } else {
-      return (
-        <div className="d-flex-row justify-content-right">
-          <h6 className="mr-auto">{this.props.checklist.checklistName}</h6>
-          {this.getFinishedTodo(this.props.checklist)}
-          {/*<FontAwesomeIcon icon={faCheck} />*/}
-          {/*<ul>
-            {this.props.checklist.todo.map((todo, index) => {
-              return <li key={index}>{todo.text}</li>;
-            })}
-          </ul>*/}
-        </div>
-      );
-    }
+    } 
+    else if (this.props.checklist !== undefined)
+        return (
+          <div className="d-flex-row justify-content-right">
+            <p className="mr-auto">{this.props.checklist.checklistName}</p>
+            {this.getFinishedTodo(this.props.checklist)}
+            {/*<FontAwesomeIcon icon={faCheck} />*/}
+            {/*<ul>
+              {this.props.checklist.todo.map((todo, index) => {
+                return <li key={index}>{todo.text}</li>;
+              })}
+            </ul>*/}
+          </div>
+        );
+    else return null;
     //return this.state.addChecklist && <this.ChecklistWithOutsideClick />;
   }
 }

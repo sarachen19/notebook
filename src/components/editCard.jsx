@@ -1,11 +1,17 @@
 import React, { Component } from "react";
 import ReactDOM from "react-dom";
-import Modal from "react-modal";
+import Modal from 'react-bootstrap/Modal';
+import Form from 'react-bootstrap/Form';
+import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+import { Button} from 'react-bootstrap';
 import OutsideClickHandler from "react-outside-click-handler";
+import autosize from "autosize";
 import Checklist from "./checklist";
 import AddTodo from "./addTodo";
-Modal.setAppElement("#root");
-
+//Modal.setAppElement("#root");
+ 
 class EditCard extends Component {
   constructor(props) {
     super(props);
@@ -17,9 +23,12 @@ class EditCard extends Component {
       editDescription: false,
       addChecklist: false,
     };
+    
+    this.Info = this.Info.bind(this);
     this.handleCloseModal = this.handleCloseModal.bind(this);
     this.editDescription = this.editDescription.bind(this);
-    this.DescriptionWithOutsideClick = this.DescriptionWithOutsideClick.bind(
+    this.exitEditDescription = this.exitEditDescription.bind(this);
+    this.GetDescription = this.GetDescription.bind(
       this
     );
     this.handleDescriptionChange = this.handleDescriptionChange.bind(this);
@@ -30,20 +39,16 @@ class EditCard extends Component {
     this.Checklists = this.Checklists.bind(this);
 
     this.editTodoInput = React.createRef();
+    this.formref = React.createRef();
   }
-
+  
   /*
    *On close, update all values in newCard, remove the original card, then add newCard into cards property.
    */
   handleCloseModal() {
     this.setState({ showModal: false });
     this.props.edit(false);
-    this.props.group.cards.forEach((card) => {
-      if (card === this.state.currentCard) {
-        card.description = this.state.tempDescription;
-        this.props.onCardsChange();
-      }
-    });
+   this.props.onCardsChange();
   }
 
   /*
@@ -52,35 +57,25 @@ class EditCard extends Component {
   editDescription() {
     this.setState({ editDescription: true });
   }
+  exitEditDescription() {
+    this.setState({ editDescription: false });
+  }
   handleDescriptionChange(e) {
     this.setState({ tempDescription: e.target.value });
   }
   handleDescriptionSubmit(e) {
     e.preventDefault();
+    this.props.card.description = this.state.tempDescription;
   }
-  DescriptionWithOutsideClick() {
-    return (
-      <OutsideClickHandler
-        onOutsideClick={() => {
-          this.setState({
-            editDescription: false,
-          });
-        }}
-      >
-        <form
-          onClick={this.editDescription}
-          onSubmit={this.handleDescriptionSubmit}
-        >
-          <textarea
-            type="textfield"
-            placeholder="Add some description"
-            value={this.state.tempDescription}
-            onChange={this.handleDescriptionChange}
-          />
-          <br />
-          {this.state.editDescription && <button type="submit">Save</button>}
-        </form>
-      </OutsideClickHandler>
+  GetDescription() {
+    return ( 
+      <Form onSubmit={this.handleDescriptionSubmit}>
+        <Form.Label>Description</Form.Label>
+        <OutsideClickHandler onOutsideClick={this.exitEditDescription}>
+          <Form.Control ref={this.formref} as="textarea" rows="1" value={this.state.tempDescription} onClick={this.editDescription} onChange={this.handleDescriptionChange}/>
+          {this.state.editDescription && <Button type="submit">Save</Button>}
+        </OutsideClickHandler>
+      </Form>
     );
   }
 
@@ -190,33 +185,59 @@ class EditCard extends Component {
       );
     });
   }
+/*
+  --------------------one card's info--------------------
+  */
+ Info() {
+  const GetDescription = this.GetDescription;
+  const Checklists = this.Checklists;
+   return(
+    <>
+      <GetDescription />
+      <Checklists />
+      <div>Activity</div>
+    </>
+   );
+ }
+ componentDidMount(){
+  autosize(this.formref.current);
+ }
 
   render() {
-    const DescriptionWithOutsideClick = this.DescriptionWithOutsideClick;
-    const Checklists = this.Checklists;
+    const Info = this.Info;
     return (
-      <Modal isOpen={this.state.showModal} contentLabel={"edit card"}>
-        <h3>{this.props.card.value}</h3>
-        <div id="description">
-          <h3>Description</h3>
-          <DescriptionWithOutsideClick />
-        </div>
-        <div id="divChecklist">
-          <Checklists />
-        </div>
-        <div>Activity</div>
-        <button onClick={this.addChecklist} id="btnaddChecklist">
-          Checklist
-        </button>
-        {this.state.addChecklist && (
-          <Checklist
-            addChecklist={this.state.addChecklist}
-            card={this.props.card}
-            onCardsChange={this.props.onCardsChange}
-            onAddChecklists={this.onAddChecklists}
-          />
-        )}
-        <button onClick={this.handleCloseModal}>Close Modal</button>
+      <Modal 
+      show={this.state.showModal} 
+      onHide={this.handleCloseModal} 
+      scrollable
+      centered>
+        <Modal.Header closeButton>
+          <Modal.Title>{this.props.card.value}</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <div className="d-flex">
+            <div className="flex-grow-1"><Info /></div>  
+            <div>          
+              <button onClick={this.addChecklist}>Checklist</button>
+              {this.state.addChecklist && (
+              <Checklist
+                addChecklist={this.state.addChecklist}
+                card={this.props.card}
+                onCardsChange={this.props.onCardsChange}
+                onAddChecklists={this.onAddChecklists}
+              />)}
+            </div>
+          </div>
+        </Modal.Body>
+        <Modal.Footer>
+          <button variant="secondary" onClick={this.handleCloseModal}>
+            Close
+          </button>
+          <button variant="primary" onClick={this.handleCloseModal}>
+            Save Changes
+          </button>
+        </Modal.Footer>
+        
       </Modal>
     );
   }

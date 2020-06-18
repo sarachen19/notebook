@@ -111,7 +111,8 @@ export const CardSourceBox = ({ k, index, card, group, onCardsChange }) => {
       if (
          
         monitor.getDropResult().type.name === "Card" ||
-        monitor.getDropResult().type.name === "Group"
+        monitor.getDropResult().type.name === "Group" ||
+        monitor.getDropResult().type.name === 'A'
       ) {
         //if dropped on a card
         const dragGroup = item.card.props.group;
@@ -177,7 +178,7 @@ export const CardSourceBox = ({ k, index, card, group, onCardsChange }) => {
     WebkitBoxShadow: "0px 2px 2px 0px rgba(179,175,179,1)",
     MozBoxShadow: "0px 2px 2px 0px rgba(179,175,179,1)",
     boxShadow: "0px 2px 2px 0px rgba(179,175,179,1)",
-    cursor: isDragging ? "grabbing" : "grab",
+    cursor: isDragging ? "grabbing" : "pointer",
   };
   const editPaneStyle = {
     visibility: "hidden",

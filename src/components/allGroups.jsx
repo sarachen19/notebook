@@ -77,6 +77,8 @@ class AllGroups extends Component {
     cache = null;
   }
   onGroupExchange(group1, group2) {
+   // console.log(group1);
+   // console.log(group2);
     const k1 = group1.key;
     const k2 = group2.key;
     let allGroups = this.state.allGroups.groups;

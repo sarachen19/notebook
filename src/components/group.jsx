@@ -3,6 +3,10 @@ import OutsideClickHandler from "react-outside-click-handler";
 import Card from "./card";
 import AllCards from "./allCards";
 import Validators from "./validators";
+import "bootstrap/dist/css/bootstrap.min.css";
+import { Dropdown} from 'react-bootstrap';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEllipsisH } from "@fortawesome/free-solid-svg-icons";
 
 class Group extends Component {
   constructor(props) {
@@ -26,6 +30,8 @@ class Group extends Component {
     this.txtGroupName = React.createRef();
     this.submitEditGroupName = this.submitEditGroupName.bind(this);
     this.edit = this.edit.bind(this);
+    this.deleteGroup = this.deleteGroup.bind(this);
+
   }
 
   addGroupSubmit(e) {
@@ -55,7 +61,24 @@ class Group extends Component {
   edit() {
     this.setState({edit: true});
   }
+  deleteGroup(e) {
+    e.preventDefault();
+    const temp = this.props.group;
+    let all= this.props.allGroups.groups;
+    all = all.filter((value,index) => value !== temp);
+    this.props.allGroups.groups = all;
+    this.props.onCardsChange();
+  }
+  onMouseOverGroup(e) {
+    e.currentTarget.style.border = "2px solid rgb(215, 220, 220)";
+    e.currentTarget.style.borderRadius = "6px";
+    e.currentTarget.style.cursor = "pointer";
+  }
+  onMouseLeaveGroup(e) {
+    e.currentTarget.style.border = "none";
+  }
 
+  
   render() {
     if (this.state.add) {
       return (
@@ -78,16 +101,28 @@ class Group extends Component {
     } else
       return (
         <>
-          {this.state.edit && <OutsideClickHandler onOutsideClick={this.submitEditGroupName}>
-            <textarea
-              //onClick={this.showChangeGroupName}
-              ref={this.txtGroupName}
-              defaultValue={this.props.group.groupName}
-              //onChange={(e)=>this.setState({tempName:e.target.value})}
-              //style={groupNameStyle}
-            ></textarea>
-          </OutsideClickHandler>}
-          {!this.state.edit && <p onClick={this.edit}>{this.props.group.groupName}</p>}
+          <div className="d-flex justify-content-between">
+            {this.state.edit && <OutsideClickHandler onOutsideClick={this.submitEditGroupName}>
+              <textarea
+                //onClick={this.showChangeGroupName}
+                ref={this.txtGroupName}
+                defaultValue={this.props.group.groupName}
+                //onChange={(e)=>this.setState({tempName:e.target.value})}
+                //style={groupNameStyle}
+              ></textarea>
+            </OutsideClickHandler>}
+            {!this.state.edit && <p onClick={this.edit} onMouseOver={this.onMouseOverGroup} onMouseLeave={this.onMouseLeaveGroup}>{this.props.group.groupName}</p>}
+            <Dropdown>
+              <Dropdown.Toggle variant="success" size="sm" className="btn btn-outline-dark" style={{backgroundColor: "rgb(235, 236, 240)", border : "none"}}>
+                <FontAwesomeIcon icon={faEllipsisH} />
+              </Dropdown.Toggle>
+              <Dropdown.Menu>
+                <Dropdown.Item href="#">Action</Dropdown.Item>
+                <Dropdown.Item href="#">Another action</Dropdown.Item>
+                <Dropdown.Item href="#" onClick={this.deleteGroup}>Delete group</Dropdown.Item>
+              </Dropdown.Menu>
+          </Dropdown>
+          </div>
           <AllCards
             key={this.props.group.key}
             group={this.props.group}

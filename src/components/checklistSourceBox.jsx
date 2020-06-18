@@ -66,7 +66,7 @@ export const ChecklistSourceBox = ({ k, card, checklist, onCardsChange }) => {
     end: (item, monitor) => {
       const dropResult = monitor.getDropResult();
       // if is dropped over another card, add checklist into card
-      if (dropResult !== null && dropResult.type.name === "Card") {
+      if (dropResult !== null && (dropResult.type.name === "Card" || dropResult.type.name === 'A')) {
         const targetCard = dropResult.props.card;
         const originalCard = item.checklist.props.card;
         const draggingChecklist = item.checklist.props.checklist;
@@ -101,7 +101,7 @@ export const ChecklistSourceBox = ({ k, card, checklist, onCardsChange }) => {
   );
   const style = {
     width: "100%",
-    cursor: isDragging ? "grabbing" : "grab",
+    cursor: isDragging ? "grabbing" : "pointer",
   };
 
   drag(drop(ref));

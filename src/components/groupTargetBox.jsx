@@ -56,7 +56,7 @@ export const GroupTargetBox = ({
         return undefined;
       } else {
         //if a card or a  group is dropped on a group
-       console.log(typeof(item.group));
+       console.log(item.group);
         return item.group;
       }
     },
@@ -82,7 +82,7 @@ export const GroupTargetBox = ({
       "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)",
     margin: "0 4px",
     padding: "2%",
-    cursor: isDragging ? "none" : "default",
+    cursor: isDragging ? "grabbing" : "pointer",
   };
 
   const previewImgStyle = {
