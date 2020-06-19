@@ -51,12 +51,6 @@ class Checklist extends Component {
 
   ChecklistWithOutsideClick() {
     return (
-      <OutsideClickHandler
-        onOutsideClick={() => {
-          this.setState({ addChecklist: false });
-          this.props.onAddChecklists(); //取消增加 修改 EditCard - addChecklist state to false
-        }}
-      >
         <form onSubmit={this.handleAddChecklistSubmit} id="addChecklistForm">
           <input
             type="text"
@@ -66,7 +60,6 @@ class Checklist extends Component {
           />
           <button type="submit"></button>
         </form>
-      </OutsideClickHandler>
     );
   }
   render() {

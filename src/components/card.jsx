@@ -3,6 +3,7 @@ import OutsideClickHandler from "react-outside-click-handler";
 import "bootstrap/dist/css/bootstrap.min.css";
 import EditCard from "./editCard";
 import { ChecklistSourceBox } from "./checklistSourceBox";
+import Label from "./label";
 import Validators from "./validators";
 const style = {
   width: "100%",
@@ -139,6 +140,10 @@ class Card extends Component {
           <h4 onClick={() => this.popupEdit(this.props.card)}>
             {this.props.card.value}
           </h4>
+          <Label 
+            smallLabel={true}
+            card={this.props.card}
+          />
 
           <h6>{this.props.card.description}</h6>
 

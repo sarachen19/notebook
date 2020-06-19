@@ -2,14 +2,14 @@ import React, { Component } from "react";
 import ReactDOM from "react-dom";
 import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
-import Container from 'react-bootstrap/Container';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
-import { Button} from 'react-bootstrap';
+import Overlay from 'react-bootstrap/Overlay';
+import Popover from 'react-bootstrap/Popover';
 import OutsideClickHandler from "react-outside-click-handler";
 import autosize from "autosize";
+import "./allGroups.css";
 import Checklist from "./checklist";
 import AddTodo from "./addTodo";
+import Label from './label';
 //Modal.setAppElement("#root");
  
 class EditCard extends Component {
@@ -22,10 +22,12 @@ class EditCard extends Component {
       showModal: true,
       editDescription: false,
       addChecklist: false,
+      addLabel: false,
     };
     
     this.Info = this.Info.bind(this);
     this.handleCloseModal = this.handleCloseModal.bind(this);
+    
     this.editDescription = this.editDescription.bind(this);
     this.exitEditDescription = this.exitEditDescription.bind(this);
     this.GetDescription = this.GetDescription.bind(
@@ -33,13 +35,19 @@ class EditCard extends Component {
     );
     this.handleDescriptionChange = this.handleDescriptionChange.bind(this);
     this.handleDescriptionSubmit = this.handleDescriptionSubmit.bind(this);
+    this.formref = React.createRef();
 
     this.addChecklist = this.addChecklist.bind(this);
     this.onAddChecklists = this.onAddChecklists.bind(this);
+    this.ShowAddChecklist = this.ShowAddChecklist.bind(this);
     this.Checklists = this.Checklists.bind(this);
-
+    this.addChecklistPopoverRef = React.createRef();
     this.editTodoInput = React.createRef();
-    this.formref = React.createRef();
+
+    this.addLabelPopoverRef = React.createRef();
+    this.addLabel = this.addLabel.bind(this);
+    this.onAddLabels = this.onAddLabels.bind(this);
+    this.Labels = this.Labels.bind(this);
   }
   
   /*
@@ -69,12 +77,12 @@ class EditCard extends Component {
   }
   GetDescription() {
     return ( 
-      <Form onSubmit={this.handleDescriptionSubmit}>
+      <Form onSubmit={this.handleDescriptionSubmit}  style={{margin:"0 20px 0 0"}}>
         <Form.Label>Description</Form.Label>
-        <OutsideClickHandler onOutsideClick={this.exitEditDescription}>
           <Form.Control ref={this.formref} as="textarea" rows="1" value={this.state.tempDescription} onClick={this.editDescription} onChange={this.handleDescriptionChange}/>
-          {this.state.editDescription && <Button type="submit">Save</Button>}
-        </OutsideClickHandler>
+          <OutsideClickHandler onOutsideClick={this.exitEditDescription} display={"contents"}>  
+            {this.state.editDescription && <button type="submit">Save</button>}
+          </OutsideClickHandler>
       </Form>
     );
   }
@@ -86,9 +94,37 @@ class EditCard extends Component {
     this.setState({ addChecklist: false }); //增加结束 恢复默认值 参数传入Checklist
   }
   addChecklist() {
-    this.setState({ addChecklist: true }); //点击增加时
+    this.setState({ addChecklist: !this.state.addChecklist }); //点击增加时
   }
-
+  ShowAddChecklist() {
+    return (
+      <OutsideClickHandler
+        onOutsideClick={() => {this.setState({addChecklist: false})}}
+      >
+        <div ref={this.addChecklistPopoverRef} >
+        <button onClick={this.addChecklist} >Checklist</button>
+        <Overlay
+        show={this.state.addChecklist}
+        target={this.addChecklistPopoverRef.current}
+        placement="bottom"
+        container={this.addChecklistPopoverRef.current}
+        containerPadding={20}
+        >
+          <Popover id="popover-contained-checklist">
+            <Popover.Content>
+              <Checklist
+                addChecklist={true}
+                card={this.props.card}
+                onCardsChange={this.props.onCardsChange}
+                onAddChecklists={this.onAddChecklists}
+                />
+            </Popover.Content>
+          </Popover>
+        </Overlay>
+        </div>
+      </OutsideClickHandler>      
+    )
+  }
   /*
   --------------------Todo handler--------------------
   */
@@ -193,40 +229,88 @@ class EditCard extends Component {
   const Checklists = this.Checklists;
    return(
     <>
+      <Label 
+        card={this.props.card}
+        onCardsChange={this.props.onCardsChange}
+        onAddLabels={this.onAddLabels}
+      />
       <GetDescription />
       <Checklists />
       <div>Activity</div>
     </>
    );
  }
+
+  /*
+  --------------------Label handler--------------------
+  */
+ addLabel() {
+   this.setState({addLabel: !this.state.addLabel});
+ }
+ onAddLabels() {
+   this.setState({addLabels: false});
+ }
+  Labels() {
+      return (
+          <div>
+          <button onClick={this.addLabel}>Label</button>
+          <Overlay
+          show={this.state.addLabel}
+          target={this.addLabelPopoverRef.current}
+          placement="right"
+          arrowProps="none"
+          container={this.addLabelPopoverRef.current}
+          containerPadding={20}
+          >
+            <OutsideClickHandler
+             onOutsideClick={() => {this.setState({addLabel: false})}}
+             >
+              <Popover id="popover-contained-label" data-container="body">
+                <Popover.Content>
+                  <Label
+                    addLabel={true}
+                    card={this.props.card}
+                    onCardsChange={this.props.onCardsChange}
+                    onAddLabels={this.onAddLabels}
+                    />
+                </Popover.Content>
+              </Popover>
+            </OutsideClickHandler>      
+          </Overlay>
+          </div>
+      );
+  }
+
+  /*
+  --------------------description autosize--------------------
+  */
  componentDidMount(){
   autosize(this.formref.current);
  }
 
   render() {
     const Info = this.Info;
+    const ShowAddChecklist = this.ShowAddChecklist;
+    const Labels = this.Labels;
     return (
+      <div id="addLabelPopoverRef" >
       <Modal 
       show={this.state.showModal} 
       onHide={this.handleCloseModal} 
       scrollable
-      centered>
-        <Modal.Header closeButton>
+      >
+        <Modal.Header closeButton ref={this.addLabelPopoverRef}>
           <Modal.Title>{this.props.card.value}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <div className="d-flex">
-            <div className="flex-grow-1"><Info /></div>  
-            <div>          
-              <button onClick={this.addChecklist}>Checklist</button>
-              {this.state.addChecklist && (
-              <Checklist
-                addChecklist={this.state.addChecklist}
-                card={this.props.card}
-                onCardsChange={this.props.onCardsChange}
-                onAddChecklists={this.onAddChecklists}
-              />)}
-            </div>
+            <div className="flex-grow-1">
+              <Info />
+            </div>  
+            <div style={{width:"30%"}}>
+              <ShowAddChecklist />
+              <Labels/>
+            </div> 
           </div>
         </Modal.Body>
         <Modal.Footer>
@@ -237,8 +321,8 @@ class EditCard extends Component {
             Save Changes
           </button>
         </Modal.Footer>
-        
       </Modal>
+      </div>
     );
   }
 }

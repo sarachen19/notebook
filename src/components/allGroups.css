@@ -1,0 +1,12 @@
+div.arrow{
+    visibility: hidden;
+}
+div.popover-body{
+    position: absolute;
+    left:30em;
+    width: 7em;
+    height: 3em;
+}
+.modal-dialog-scrollable .modal-content {
+    overflow: visible;
+}
