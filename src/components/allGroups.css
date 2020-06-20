@@ -1,12 +1,44 @@
-div.arrow{
-    visibility: hidden;
+/*
+* css in editCard class 
+*/
+div.arrow {
+	visibility: hidden;
 }
-div.popover-body{
-    position: absolute;
-    left:30em;
-    width: 7em;
-    height: 3em;
+div.popover-body {
+	position: absolute;
+	left: 28em;
+	top: 4.2em;
+	width: 7em;
+	min-height: 3em;
 }
 .modal-dialog-scrollable .modal-content {
-    overflow: visible;
+	overflow: visible;
+}
+/*
+* css in cover class 
+*/
+div.div-grid-covers {
+	background-color: white;
+	width: fit-content;
+	border-radius: 4px;
+	padding: 0 1em;
+}
+div.div-grid-covers-images {
+	width: 9em;
+	margin: 0;
+}
+div.div-grid-covers-colors {
+	width: 18em;
+}
+img.cover_images {
+	width: 100%;
+	padding: 0.5em;
+	border-radius: 14px;
+}
+button.cover_colors {
+	width: 4em;
+	height: 2.5em;
+	margin: 2px;
+	padding: 1px;
+	transition: all 0.3s;
 }
