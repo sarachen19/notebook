@@ -61,6 +61,8 @@ class EditCard extends Component {
 		this.addCover = this.addCover.bind(this);
 		this.onAddCovers = this.onAddCovers.bind(this);
 		this.Covers = this.Covers.bind(this);
+		this.displayCover = this.displayCover.bind(this);
+		this.coverSyleRef = React.createRef();
 	}
 
 	/*
@@ -317,7 +319,7 @@ class EditCard extends Component {
 		this.setState({ addCover: !this.state.addCover });
 	}
 	onAddCovers() {
-		this.setState({ addCover: false });
+		this.setState({ addCover: true });
 	}
 	Covers() {
 		return (
@@ -351,11 +353,58 @@ class EditCard extends Component {
 			</div>
 		);
 	}
+
+	displayCover(ref) {
+		var target = ref.current;
+		const cover = this.props.card.cover;
+		//console.log(cover);
+		switch (cover) {
+			case "cover_image_1":
+				target.style.backgroundImage = "url(" + cover_image_1 + ")";
+				break;
+			case "cover_image_2":
+				target.style.backgroundImage = "url(" + cover_image_2 + ")";
+				break;
+			case "cover_image_3":
+				target.style.backgroundImage = "url(" + cover_image_3 + ")";
+				break;
+			case "cover_image_4":
+				target.style.backgroundImage = "url(" + cover_image_4 + ")";
+				break;
+			case "cover_image_5":
+				target.style.backgroundImage = "url(" + cover_image_5 + ")";
+				break;
+			case "cover_image_6":
+				target.style.backgroundImage = "url(" + cover_image_6 + ")";
+				break;
+			case "cover_image_7":
+				target.style.backgroundImage = "url(" + cover_image_7 + ")";
+				break;
+			case "cover_image_8":
+				target.style.backgroundImage = "url(" + cover_image_8 + ")";
+				break;
+			case "cover_image_9":
+				target.style.backgroundImage = "url(" + cover_image_9 + ")";
+				break;
+			case "cover_image_10":
+				target.style.backgroundImage = "url(" + cover_image_10 + ")";
+				break;
+			default:
+				break;
+		}
+	}
+	componentDidUpdate() {
+		this.displayCover(this.coverSyleRef);
+	}
+
 	/*
-  --------------------description autosize--------------------
+  --------------------description autosize and show cover--------------------
   */
 	componentDidMount() {
+		//autosize description
 		autosize(this.formref.current);
+		//show cover
+		this.displayCover(this.coverSyleRef);
 	}
 
 	render() {
@@ -364,9 +413,6 @@ class EditCard extends Component {
 		const Labels = this.Labels;
 		const Covers = this.Covers;
 		const cover = this.props.card.cover;
-		const coverSyle = {
-			backgroundImage: `url(` + cover_image_1 + `)`,
-		};
 		return (
 			<div id="popoverRef">
 				<Modal
@@ -376,7 +422,7 @@ class EditCard extends Component {
 				>
 					<Modal.Header closeButton ref={this.popoverRef}>
 						<Modal.Title>
-							<p>{this.props.card.value}</p>
+							<p ref={this.coverSyleRef}>{this.props.card.value}</p>
 						</Modal.Title>
 					</Modal.Header>
 					<Modal.Body>

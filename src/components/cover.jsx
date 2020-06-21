@@ -34,6 +34,9 @@ class Cover extends Component {
 				xhttp.onreadystatechange = function () {
 					if (this.readyState == 4 && this.status == 200) {
 						console.log(url);
+						//console.log(e.currentTarget);
+						//document.getElementById("cover_image_1").src = url;
+						return url;
 					}
 				};
 				xhttp.open("GET", url, true);
@@ -43,7 +46,6 @@ class Cover extends Component {
 				console.log("error");
 			});
 
-		return null;
 		/*
 		storageRef
 			.child(path)
@@ -69,7 +71,7 @@ class Cover extends Component {
 		const imageSrc = e.target.alt;
 		const card = this.props.card;
 		card.cover = imageSrc;
-		//this.props.onAddCovers();
+		this.props.onAddCovers();
 		this.props.onCardsChange();
 	}
 
@@ -81,7 +83,7 @@ class Cover extends Component {
 						<p>Images</p>
 						<div className={"d-flex"}>
 							<img
-								src={this.getCoverImage("cover_image_1")}
+								src={cover_image_1}
 								alt="cover_image_1"
 								className="cover_images"
 								onClick={this.setCoverImage}
