@@ -1,7 +1,4 @@
 import React, { Component } from "react";
-import OutsideClickHandler from "react-outside-click-handler";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCheck } from "@fortawesome/free-solid-svg-icons";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 class Checklist extends Component {

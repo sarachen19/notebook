@@ -70,7 +70,7 @@ class EditCard extends Component {
 	 */
 	handleCloseModal() {
 		this.setState({ showModal: false });
-		this.props.edit(false);
+		this.props.edit();
 		this.props.onCardsChange();
 	}
 
@@ -353,44 +353,64 @@ class EditCard extends Component {
 			</div>
 		);
 	}
-
+	coverStyle = {
+		margin: "auto",
+		height: "10rem",
+		width: "100%",
+		paddingTop: "4rem",
+		textAlign: "center",
+		borderRadius: "10px",
+		backgroundRepeat: "no-repeat",
+		backgroundPosition: "center center",
+		backgroundSize: "cover",
+		color: "white",
+	};
 	displayCover(ref) {
+		if (ref === null || ref.current === null) return;
 		var target = ref.current;
 		const cover = this.props.card.cover;
-		//console.log(cover);
-		switch (cover) {
-			case "cover_image_1":
-				target.style.backgroundImage = "url(" + cover_image_1 + ")";
-				break;
-			case "cover_image_2":
-				target.style.backgroundImage = "url(" + cover_image_2 + ")";
-				break;
-			case "cover_image_3":
-				target.style.backgroundImage = "url(" + cover_image_3 + ")";
-				break;
-			case "cover_image_4":
-				target.style.backgroundImage = "url(" + cover_image_4 + ")";
-				break;
-			case "cover_image_5":
-				target.style.backgroundImage = "url(" + cover_image_5 + ")";
-				break;
-			case "cover_image_6":
-				target.style.backgroundImage = "url(" + cover_image_6 + ")";
-				break;
-			case "cover_image_7":
-				target.style.backgroundImage = "url(" + cover_image_7 + ")";
-				break;
-			case "cover_image_8":
-				target.style.backgroundImage = "url(" + cover_image_8 + ")";
-				break;
-			case "cover_image_9":
-				target.style.backgroundImage = "url(" + cover_image_9 + ")";
-				break;
-			case "cover_image_10":
-				target.style.backgroundImage = "url(" + cover_image_10 + ")";
-				break;
-			default:
-				break;
+		if (cover !== "") {
+			target.style.height = "10rem";
+			switch (cover) {
+				case "cover_image_1":
+					target.style.backgroundImage = "url(" + cover_image_1 + ")";
+					break;
+				case "cover_image_2":
+					target.style.backgroundImage = "url(" + cover_image_2 + ")";
+					break;
+				case "cover_image_3":
+					target.style.backgroundImage = "url(" + cover_image_3 + ")";
+					break;
+				case "cover_image_4":
+					target.style.backgroundImage = "url(" + cover_image_4 + ")";
+					break;
+				case "cover_image_5":
+					target.style.backgroundImage = "url(" + cover_image_5 + ")";
+					break;
+				case "cover_image_6":
+					target.style.backgroundImage = "url(" + cover_image_6 + ")";
+					break;
+				case "cover_image_7":
+					target.style.backgroundImage = "url(" + cover_image_7 + ")";
+					break;
+				case "cover_image_8":
+					target.style.backgroundImage = "url(" + cover_image_8 + ")";
+					break;
+				case "cover_image_9":
+					target.style.backgroundImage = "url(" + cover_image_9 + ")";
+					break;
+				case "cover_image_10":
+					target.style.backgroundImage = "url(" + cover_image_10 + ")";
+					break;
+				default:
+					target.style.backgroundImage = "";
+					target.style.backgroundColor = cover;
+					target.style.height = "3rem";
+					break;
+			}
+		} else {
+			target.style.height = "0";
+			target.style.padding = "0";
 		}
 	}
 	componentDidUpdate() {
@@ -412,7 +432,6 @@ class EditCard extends Component {
 		const ShowAddChecklist = this.ShowAddChecklist;
 		const Labels = this.Labels;
 		const Covers = this.Covers;
-		const cover = this.props.card.cover;
 		return (
 			<div id="popoverRef">
 				<Modal
@@ -421,13 +440,14 @@ class EditCard extends Component {
 					scrollable
 				>
 					<Modal.Header closeButton ref={this.popoverRef}>
-						<Modal.Title>
-							<p ref={this.coverSyleRef}>{this.props.card.value}</p>
+						<Modal.Title style={{ width: "100%" }}>
+							<p ref={this.coverSyleRef} style={this.coverStyle}></p>
 						</Modal.Title>
 					</Modal.Header>
 					<Modal.Body>
 						<div className="row">
 							<div className="col-8">
+								<p>{this.props.card.value}</p>
 								<Info />
 							</div>
 							<div className="col-4">
