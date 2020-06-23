@@ -71,10 +71,10 @@ span.dot {
 	display: inline-block;
 	margin-right: 3px;
 }
-p.todo-text-indent,
-li.todo-text-indent {
+p.todo-text-indent {
 	text-indent: 1em;
 	display: block;
+	word-break: break-word;
 }
 p.todo-text-indent:hover,
 li.todo-text-indent:hover {
@@ -107,10 +107,17 @@ div.popover-body {
 .modal-dialog-scrollable .modal-content {
 	overflow: visible;
 	border: none;
+	display: table;
 }
 div#editCard-modal {
 	min-height: 600px;
 	max-width: 800px;
+}
+div#editCard-modal botton {
+	background-color: #5aac44;
+	box-shadow: none;
+	border: none;
+	color: #fff;
 }
 div.modal-header {
 	padding: 0;
@@ -140,8 +147,12 @@ div.editCard-modal-header-cover > button.close {
 	transition: background-color 85ms, color 85ms;
 }
 div.modal-body-header {
-	margin: 5px 20px;
+	margin: 12px 40px 8px 56px;
 	min-height: 32px;
+}
+.modal-main-icon {
+	left: 40px;
+	position: absolute;
 }
 div.modal-body-main {
 	float: left;
@@ -152,11 +163,91 @@ div.modal-body-main {
 	padding: 0 8px 8px 16px;
 	width: 552px;
 }
+
+div.modal-body p {
+	padding-bottom: 3px;
+	margin: 0;
+}
+p#edit-card-group-name {
+	color: #5e6c84;
+	font-size: 13px;
+	font-weight: 500;
+	letter-spacing: 0.04em;
+}
+div.div-u-gutter li.modal-todo {
+	color: #5e6c84;
+	display: inline-block;
+	cursor: pointer;
+	word-break: break-word;
+	word-wrap: break-word;
+	overflow-wrap: break-word;
+	min-height: 20px;
+	margin: 0 10px;
+	padding: 7px 0;
+}
+div.div-u-gutter input.modal-todo-checkbox {
+	display: inline-block;
+	cursor: pointer;
+	border-radius: 2px;
+	box-sizing: border-box;
+	line-height: 18px;
+	overflow: hidden;
+	text-indent: 100%;
+	height: 18px;
+	width: 18px;
+	white-space: nowrap;
+	background-color: #fafbfc;
+	box-shadow: inset 0 0 0 2px #dfe1e6;
+	position: absolute;
+	left: 40px;
+	margin-top: 10px;
+	text-align: center;
+}
+div.div-u-gutter input.modal-todo-checkbox:checked {
+	background-color: #0079bf;
+	box-shadow: inset 0 0 0 2px #0079bf;
+}
+div.modal-body-main div.div-u-gutter {
+	margin-top: 8px;
+	margin-left: 40px;
+	margin-bottom: 30px;
+	clear: both;
+}
+p.main-title {
+	font-weight: 600;
+}
+div.label-and-duedate-div {
+	display: block;
+	float: left;
+	margin: 0 8px 20px 0;
+	max-width: 100%;
+}
+p.label-and-duedate-txt {
+	margin-bottom: 3px;
+	color: #5e6c84;
+	font-size: 13px;
+	font-weight: 500;
+	letter-spacing: 0.04em;
+	text-transform: uppercase;
+}
 div.modal-body-sidebar {
 	float: right;
 	padding: 0 16px 8px 8px;
 	width: 168px;
 }
+a.sidebar-links {
+	margin-bottom: 10px;
+	width: 160px;
+	display: flex;
+	background-color: rgb(234, 236, 240);
+}
+span.sidebar-txt {
+	color: #5e6c84;
+	font-size: 15px;
+	font-weight: 500;
+	letter-spacing: 0.04em;
+}
+
 /*
 * css in cover class 
 */

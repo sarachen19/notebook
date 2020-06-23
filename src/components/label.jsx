@@ -29,7 +29,7 @@ class Label extends Component {
 			margin: "0 1px",
 		};
 		return (
-			<div>
+			<div className="modal-body-main-labels">
 				{labels.map((label, index) => {
 					const className =
 						"btn btn-xs disabled " + label + " card-label-small";

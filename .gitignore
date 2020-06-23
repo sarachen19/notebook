@@ -24,3 +24,9 @@ yarn-error.log*
 .firebase/hosting.YnVpbGQ.cache
 .firebase/hosting.cHVibGlj.cache
 .firebaserc
+cors.json
+firebase.json
+firestore.rules
+package.json
+package-lock.json
+storage.rules

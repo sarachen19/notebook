@@ -1,7 +1,5 @@
 import React, { Component } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCheckSquare } from "@fortawesome/free-solid-svg-icons";
 class Checklist extends Component {
 	constructor(props) {
 		super(props);
@@ -75,7 +73,9 @@ class Checklist extends Component {
 					ref={this.checklistInput}
 					defaultValue="Checklist"
 				/>
-				<button type="submit">Add</button>
+				<button className="btn btn-success btn-sm" type="submit">
+					Add
+				</button>
 			</form>
 		);
 	}

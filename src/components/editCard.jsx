@@ -4,6 +4,8 @@ import Modal from "react-bootstrap/Modal";
 import Form from "react-bootstrap/Form";
 import Overlay from "react-bootstrap/Overlay";
 import Popover from "react-bootstrap/Popover";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPager } from "@fortawesome/free-solid-svg-icons";
 import OutsideClickHandler from "react-outside-click-handler";
 import autosize from "autosize";
 import "./allGroups.css";
@@ -36,7 +38,6 @@ class EditCard extends Component {
 			addCover: false,
 		};
 
-		this.Info = this.Info.bind(this);
 		this.handleCloseModal = this.handleCloseModal.bind(this);
 
 		this.editDescription = this.editDescription.bind(this);
@@ -96,7 +97,6 @@ class EditCard extends Component {
 				onSubmit={this.handleDescriptionSubmit}
 				style={{ margin: "0 20px 0 0" }}
 			>
-				<Form.Label>Description</Form.Label>
 				<Form.Control
 					ref={this.formref}
 					as="textarea"
@@ -109,7 +109,11 @@ class EditCard extends Component {
 					onOutsideClick={this.exitEditDescription}
 					display={"contents"}
 				>
-					{this.state.editDescription && <button type="submit">Save</button>}
+					{this.state.editDescription && (
+						<button className="btn btn-success btn-sm" type="submit">
+							Save
+						</button>
+					)}
 				</OutsideClickHandler>
 			</Form>
 		);
@@ -127,7 +131,16 @@ class EditCard extends Component {
 	ShowAddChecklist() {
 		return (
 			<div>
-				<button onClick={this.addChecklist}>Checklist</button>
+				<a
+					href="#"
+					title="checklist"
+					role="button"
+					className="btn btn-light sidebar-links"
+					onClick={this.addChecklist}
+				>
+					<FontAwesomeIcon icon={faPager} style={{ marginRight: "10px" }} />
+					<span className="sidebar-txt">Checklist</span>
+				</a>
 				<Overlay
 					show={this.state.addChecklist}
 					target={this.coverRef.current}
@@ -185,7 +198,9 @@ class EditCard extends Component {
 						defaultValue={todo.text}
 						ref={this.editTodoInput}
 					></input>
-					<button type="submit">Submit</button>
+					<button className="btn btn-success btn-sm" type="submit">
+						Submit
+					</button>
 				</form>
 			</OutsideClickHandler>,
 			document.getElementById(checklist.key + "-" + index)
@@ -217,27 +232,27 @@ class EditCard extends Component {
 	Checklists() {
 		const checklists = this.props.card.checklists;
 		return checklists.map((checklist, index) => {
+			const ProgressBar = this.ProgessBar(checklist);
 			return (
-				<div key={index}>
-					<p>{checklist.checklistName}</p>
+				<div key={index} className="div-u-gutter">
+					<FontAwesomeIcon icon={faPager} className="modal-main-icon" />
+					<p className="main-title">{checklist.checklistName}</p>
+					{ProgressBar}
 					{checklist.todo.map((todo, index) => {
 						return (
 							<div key={index}>
 								<input
+									className="modal-todo-checkbox"
 									type="checkbox"
 									onClick={() => this.toggleTodo(checklist, todo, index)}
-									style={{
-										display: "inline-block",
-									}}
 									defaultChecked={todo.finished}
 								></input>
 								<li
-									className="todo-text-indent"
+									className="modal-todo"
 									onClick={() => this.editTodo(checklist, todo, index)}
 									id={checklist.key + "-" + index}
 									style={{
 										textDecoration: todo.finished ? "line-through" : "none",
-										display: "inline-block",
 									}}
 								>
 									{todo.text}
@@ -253,26 +268,39 @@ class EditCard extends Component {
 			);
 		});
 	}
-	/*
-  --------------------one card's info--------------------
-  */
-	Info() {
-		const GetDescription = this.GetDescription;
-		const Checklists = this.Checklists;
-		return (
-			<div className="modal-body-main">
-				<Label
-					card={this.props.card}
-					onCardsChange={this.props.onCardsChange}
-					onAddLabels={this.onAddLabels}
-				/>
-				<GetDescription />
-				<Checklists />
-				<div>Activity</div>
-			</div>
-		);
+	ProgessBar(checklist) {
+		if (checklist.todo.length === 0) {
+			return null;
+		} else {
+			let count = 0;
+			let total = 0;
+			checklist.todo.forEach((todo) => {
+				if (todo.finished === true) {
+					count++;
+				}
+				total++;
+			});
+			const percentage = parseInt((count / total) * 100);
+			const width = percentage + "%";
+			return (
+				<div
+					className="progress"
+					style={{ height: "10px", backgroundColor: "#FEEFC1" }}
+				>
+					<div
+						className="progress-bar"
+						style={{
+							width: width,
+							height: "10px",
+							backgroundColor: "#f8ce4f",
+						}}
+					>
+						{percentage}%
+					</div>
+				</div>
+			);
+		}
 	}
-
 	/*
   --------------------Label handler--------------------
   */
@@ -285,7 +313,17 @@ class EditCard extends Component {
 	Labels() {
 		return (
 			<div>
-				<button onClick={this.addLabel}>Label</button>
+				<a
+					href="#"
+					title="labels"
+					role="button"
+					className="btn btn-light sidebar-links"
+					onClick={this.addLabel}
+				>
+					<FontAwesomeIcon icon={faPager} style={{ marginRight: "10px" }} />
+					<span className="sidebar-txt">Labels</span>
+				</a>
+
 				<Overlay
 					show={this.state.addLabel}
 					target={this.coverRef.current}
@@ -326,7 +364,16 @@ class EditCard extends Component {
 	Covers() {
 		return (
 			<div>
-				<button onClick={this.addCover}>Cover</button>
+				<a
+					href="#"
+					title="cover"
+					role="button"
+					className="btn btn-light sidebar-links"
+					onClick={this.addCover}
+				>
+					<FontAwesomeIcon icon={faPager} style={{ marginRight: "10px" }} />
+					<span className="sidebar-txt">Cover</span>
+				</a>
 				<Overlay
 					show={this.state.addCover}
 					target={this.coverRef.current}
@@ -430,10 +477,11 @@ class EditCard extends Component {
 	}
 
 	render() {
-		const Info = this.Info;
 		const ShowAddChecklist = this.ShowAddChecklist;
 		const Labels = this.Labels;
 		const Covers = this.Covers;
+		const GetDescription = this.GetDescription;
+		const Checklists = this.Checklists;
 		return (
 			<div>
 				<Modal
@@ -453,26 +501,41 @@ class EditCard extends Component {
 					</Modal.Header>
 					<Modal.Body>
 						<div className="modal-body-header">
-							<p>{this.props.card.value}</p>
-							<p>in group {this.props.group.groupName}</p>
+							<FontAwesomeIcon icon={faPager} className="modal-main-icon" />
+							<h5 className="main-title">{this.props.card.value}</h5>
+							<p id="edit-card-group-name">
+								in group {this.props.group.groupName}
+							</p>
 						</div>
-						<div>
-							<Info />
-							<div className="modal-body-sidebar">
-								<ShowAddChecklist />
-								<Labels />
-								<Covers />
+						<div className="modal-body-main">
+							<div className="div-u-gutter">
+								<div className="label-and-duedate-div">
+									<p className="label-and-duedate-txt">labels</p>
+									<Label
+										card={this.props.card}
+										onCardsChange={this.props.onCardsChange}
+										onAddLabels={this.onAddLabels}
+									/>
+								</div>
+								<div className="label-and-duedate-div">
+									<p className="label-and-duedate-txt">due date</p>
+								</div>
 							</div>
+							<div className="div-u-gutter">
+								<FontAwesomeIcon icon={faPager} className="modal-main-icon" />
+								<p className="main-title">Description</p>
+								<GetDescription />
+							</div>
+							<Checklists />
+							<div className="div-u-gutter">To be added</div>
+						</div>
+						<div className="modal-body-sidebar">
+							<ShowAddChecklist />
+							<Labels />
+							<Covers />
 						</div>
 					</Modal.Body>
-					<Modal.Footer>
-						<button variant="secondary" onClick={this.handleCloseModal}>
-							Close
-						</button>
-						<button variant="primary" onClick={this.handleCloseModal}>
-							Save Changes
-						</button>
-					</Modal.Footer>
+					<Modal.Footer></Modal.Footer>
 				</Modal>
 			</div>
 		);
