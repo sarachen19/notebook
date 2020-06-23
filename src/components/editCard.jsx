@@ -46,7 +46,7 @@ class EditCard extends Component {
 		this.handleDescriptionSubmit = this.handleDescriptionSubmit.bind(this);
 		this.formref = React.createRef();
 
-		this.popoverRef = React.createRef();
+		this.coverRef = React.createRef();
 
 		this.addChecklist = this.addChecklist.bind(this);
 		this.onAddChecklists = this.onAddChecklists.bind(this);
@@ -62,7 +62,7 @@ class EditCard extends Component {
 		this.onAddCovers = this.onAddCovers.bind(this);
 		this.Covers = this.Covers.bind(this);
 		this.displayCover = this.displayCover.bind(this);
-		this.coverSyleRef = React.createRef();
+		this.coverRef = React.createRef();
 	}
 
 	/*
@@ -130,9 +130,9 @@ class EditCard extends Component {
 				<button onClick={this.addChecklist}>Checklist</button>
 				<Overlay
 					show={this.state.addChecklist}
-					target={this.popoverRef.current}
+					target={this.coverRef.current}
 					placement="right"
-					container={this.popoverRef.current}
+					container={this.coverRef.current}
 					containerPadding={20}
 				>
 					<OutsideClickHandler
@@ -220,29 +220,31 @@ class EditCard extends Component {
 			return (
 				<div key={index}>
 					<p>{checklist.checklistName}</p>
-					<ul>
-						{checklist.todo.map((todo, index) => {
-							return (
-								<div key={index}>
-									<input
-										type="checkbox"
-										onClick={() => this.toggleTodo(checklist, todo, index)}
-										style={{ display: "inline-block" }}
-									></input>
-									<li
-										onClick={() => this.editTodo(checklist, todo, index)}
-										id={checklist.key + "-" + index}
-										style={{
-											textDecoration: todo.finished ? "line-through" : "none",
-											display: "inline-block",
-										}}
-									>
-										{todo.text}
-									</li>
-								</div>
-							);
-						})}
-					</ul>
+					{checklist.todo.map((todo, index) => {
+						return (
+							<div key={index}>
+								<input
+									type="checkbox"
+									onClick={() => this.toggleTodo(checklist, todo, index)}
+									style={{
+										display: "inline-block",
+									}}
+									defaultChecked={todo.finished}
+								></input>
+								<li
+									className="todo-text-indent"
+									onClick={() => this.editTodo(checklist, todo, index)}
+									id={checklist.key + "-" + index}
+									style={{
+										textDecoration: todo.finished ? "line-through" : "none",
+										display: "inline-block",
+									}}
+								>
+									{todo.text}
+								</li>
+							</div>
+						);
+					})}
 					<AddTodo
 						checklist={checklist}
 						onCardsChange={this.props.onCardsChange}
@@ -258,7 +260,7 @@ class EditCard extends Component {
 		const GetDescription = this.GetDescription;
 		const Checklists = this.Checklists;
 		return (
-			<>
+			<div className="modal-body-main">
 				<Label
 					card={this.props.card}
 					onCardsChange={this.props.onCardsChange}
@@ -267,7 +269,7 @@ class EditCard extends Component {
 				<GetDescription />
 				<Checklists />
 				<div>Activity</div>
-			</>
+			</div>
 		);
 	}
 
@@ -286,10 +288,10 @@ class EditCard extends Component {
 				<button onClick={this.addLabel}>Label</button>
 				<Overlay
 					show={this.state.addLabel}
-					target={this.popoverRef.current}
+					target={this.coverRef.current}
 					placement="right"
 					arrowProps="none"
-					container={this.popoverRef.current}
+					container={this.coverRef.current}
 					containerPadding={20}
 				>
 					<OutsideClickHandler
@@ -327,10 +329,10 @@ class EditCard extends Component {
 				<button onClick={this.addCover}>Cover</button>
 				<Overlay
 					show={this.state.addCover}
-					target={this.popoverRef.current}
+					target={this.coverRef.current}
 					placement="right"
 					arrowProps="none"
-					container={this.popoverRef.current}
+					container={this.coverRef.current}
 					containerPadding={20}
 				>
 					<OutsideClickHandler
@@ -414,7 +416,7 @@ class EditCard extends Component {
 		}
 	}
 	componentDidUpdate() {
-		this.displayCover(this.coverSyleRef);
+		this.displayCover(this.coverRef);
 	}
 
 	/*
@@ -424,7 +426,7 @@ class EditCard extends Component {
 		//autosize description
 		autosize(this.formref.current);
 		//show cover
-		this.displayCover(this.coverSyleRef);
+		this.displayCover(this.coverRef);
 	}
 
 	render() {
@@ -433,24 +435,30 @@ class EditCard extends Component {
 		const Labels = this.Labels;
 		const Covers = this.Covers;
 		return (
-			<div id="popoverRef">
+			<div>
 				<Modal
+					id="editCard-modal"
 					show={this.state.showModal}
 					onHide={this.handleCloseModal}
 					scrollable
 				>
-					<Modal.Header closeButton ref={this.popoverRef}>
+					<Modal.Header
+						closeButton
+						ref={this.coverRef}
+						className="editCard-modal-header-cover"
+					>
 						<Modal.Title style={{ width: "100%" }}>
-							<p ref={this.coverSyleRef} style={this.coverStyle}></p>
+							<p></p>
 						</Modal.Title>
 					</Modal.Header>
 					<Modal.Body>
-						<div className="row">
-							<div className="col-8">
-								<p>{this.props.card.value}</p>
-								<Info />
-							</div>
-							<div className="col-4">
+						<div className="modal-body-header">
+							<p>{this.props.card.value}</p>
+							<p>in group {this.props.group.groupName}</p>
+						</div>
+						<div>
+							<Info />
+							<div className="modal-body-sidebar">
 								<ShowAddChecklist />
 								<Labels />
 								<Covers />

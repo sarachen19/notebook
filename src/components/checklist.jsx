@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
-
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCheckSquare } from "@fortawesome/free-solid-svg-icons";
 class Checklist extends Component {
 	constructor(props) {
 		super(props);
@@ -15,28 +16,40 @@ class Checklist extends Component {
 		this.handleAddChecklistSubmit = this.handleAddChecklistSubmit.bind(this);
 		this.AddChecklist = this.AddChecklist.bind(this);
 		this.checklistInput = React.createRef();
+		this.Checklist = this.Checklist.bind(this);
 	}
-	getFinishedTodo(checklist) {
-		let count = 0;
-		let total = 0;
-		checklist.todo.forEach((todo) => {
-			if (todo.finished === true) {
-				count++;
-			}
-			total++;
-		});
-		const percentage = parseInt((count / total) * 100);
-		const width = percentage + "%";
-		return (
-			<div className="progress" style={{ height: "10px" }}>
+	ProgessBar(checklist) {
+		if (checklist.todo.length === 0) {
+			return null;
+		} else {
+			let count = 0;
+			let total = 0;
+			checklist.todo.forEach((todo) => {
+				if (todo.finished === true) {
+					count++;
+				}
+				total++;
+			});
+			const percentage = parseInt((count / total) * 100);
+			const width = percentage + "%";
+			return (
 				<div
-					className="progress-bar bg-warning"
-					style={{ width: width, height: "10px" }}
+					className="progress"
+					style={{ height: "10px", backgroundColor: "#FEEFC1" }}
 				>
-					{percentage}%
+					<div
+						className="progress-bar"
+						style={{
+							width: width,
+							height: "10px",
+							backgroundColor: "#f8ce4f",
+						}}
+					>
+						{percentage}%
+					</div>
 				</div>
-			</div>
-		);
+			);
+		}
 	}
 	handleAddChecklistSubmit(e) {
 		e.preventDefault();
@@ -66,23 +79,60 @@ class Checklist extends Component {
 			</form>
 		);
 	}
+	toggleTodo(e, checklist, oneTodo, todoIndex) {
+		e.stopPropagation();
+		checklist.todo.forEach((value, index) => {
+			if (index === todoIndex) {
+				value.finished = !value.finished;
+			}
+		});
+		this.props.onCardsChange();
+	}
+
+	Checklist() {
+		const checklist = this.props.checklist;
+		return (
+			<div>
+				<div className="d-flex align-items-center">
+					<span className="dot"></span>
+					<p>{"  " + checklist.checklistName}</p>
+				</div>
+				{this.ProgessBar(this.props.checklist)}
+				{checklist.todo.map((todo, index) => {
+					return (
+						<div key={index}>
+							<p
+								className="todo-text-indent"
+								style={{
+									textDecoration: todo.finished ? "line-through" : "none",
+									display: "inline-block",
+								}}
+								key={index}
+								onClick={(e) => this.toggleTodo(e, checklist, todo, index)}
+							>
+								{todo.text}
+							</p>
+						</div>
+					);
+				})}
+			</div>
+		);
+	}
 	render() {
 		if (this.state.addChecklist) {
 			return <this.AddChecklist />;
-		} else if (this.props.checklist !== undefined)
+		} else if (this.props.checklist !== undefined) {
+			const Checklist = this.Checklist;
 			return (
+				<Checklist />
+				/*
 				<div className="d-flex-row justify-content-right">
 					<p className="mr-auto">{this.props.checklist.checklistName}</p>
-					{this.getFinishedTodo(this.props.checklist)}
-					{/*<FontAwesomeIcon icon={faCheck} />*/}
-					{/*<ul>
-              {this.props.checklist.todo.map((todo, index) => {
-                return <li key={index}>{todo.text}</li>;
-              })}
-            </ul>*/}
+					{this.ProgessBar(this.props.checklist)}
 				</div>
+				*/
 			);
-		else return null;
+		} else return null;
 		//return this.state.addChecklist && <this.AddChecklist />;
 	}
 }

@@ -1,4 +1,97 @@
 /*
+* css in index.html 
+*/
+body {
+	height: 100%;
+	background-color: #6ebc6c;
+	color: #172b4d;
+	font-family: Helvetica, sans-serif;
+	font-size: 16px;
+	line-height: 20px;
+	font-weight: 400;
+}
+div#root {
+	background-color: #6ebc6c;
+	height: 100%;
+}
+
+/*
+* css in group class 
+*/
+div.group-header {
+	padding: 4px;
+	position: relative;
+	min-height: 20px;
+	width: 100%;
+}
+textarea#group-name-show {
+	width: 100%;
+	background: transparent;
+	min-height: 20px;
+	max-height: 256px;
+	padding: 4px 8px;
+	font-weight: 600;
+	margin: -4px 0;
+	border: none;
+}
+textarea#group-name-textarea {
+	width: 100%;
+	background-color: #fff;
+	border: none;
+	box-shadow: inset 0 0 0 2px #0079bf;
+	border-radius: 3px;
+	min-height: 20px;
+	max-height: 256px;
+	padding: 4px 8px;
+	font-weight: 600;
+	margin: -4px 0;
+}
+/*
+* css in cardSourceBox class 
+*/
+div.card-in-group {
+	padding: 0 4px;
+	border-radius: 3px;
+	box-shadow: 0 1px 0 rgba(9, 30, 66, 0.25);
+	cursor: pointer;
+	max-width: 300px;
+	min-height: 20px;
+}
+div.card-in-group p {
+	margin: 5px 0 2px 0;
+}
+/*
+css in checklist and editcard(todo)
+*/
+span.dot {
+	height: 6px;
+	width: 6px;
+	background-color: #bbb;
+	border-radius: 50%;
+	display: inline-block;
+	margin-right: 3px;
+}
+p.todo-text-indent,
+li.todo-text-indent {
+	text-indent: 1em;
+	display: block;
+}
+p.todo-text-indent:hover,
+li.todo-text-indent:hover {
+	opacity: 1;
+	transform: translate3d(5px, 0, 0);
+	transition: transform 0.3s ease-out, opacity 0.3s ease-out;
+	cursor: default;
+}
+
+/*
+*css in label class
+*/
+p.card-label-small {
+	margin: 0;
+	padding: 0;
+}
+/*
 * css in editCard class 
 */
 div.arrow {
@@ -7,12 +100,62 @@ div.arrow {
 div.popover-body {
 	position: absolute;
 	left: 28em;
-	top: 4.2em;
+	top: 10em;
 	width: 7em;
 	min-height: 3em;
 }
 .modal-dialog-scrollable .modal-content {
 	overflow: visible;
+	border: none;
+}
+div#editCard-modal {
+	min-height: 600px;
+	max-width: 800px;
+}
+div.modal-header {
+	padding: 0;
+}
+div.editCard-modal-header-cover {
+	height: 160px;
+	background-size: cover;
+	padding: 0px;
+	border-radius: 3px;
+	box-sizing: border-box;
+	background-position: center center;
+	text-align: center;
+	background-repeat: no-repeat;
+	color: white;
+}
+div.editCard-modal-header-cover > button.close {
+	border-radius: 50%;
+	position: absolute;
+	top: 0;
+	right: 0;
+	height: 32px;
+	overflow: hidden;
+	padding: 0;
+	margin: 8px;
+	width: 32px;
+	background-color: rosybrown;
+	transition: background-color 85ms, color 85ms;
+}
+div.modal-body-header {
+	margin: 5px 20px;
+	min-height: 32px;
+}
+div.modal-body-main {
+	float: left;
+	margin: 0;
+	overflow-x: hidden;
+	overflow-y: auto;
+	min-height: 24px;
+	padding: 0 8px 8px 16px;
+	width: 552px;
+}
+div.modal-body-sidebar {
+	float: right;
+	padding: 0 16px 8px 8px;
+	width: 168px;
 }
 /*
 * css in cover class 

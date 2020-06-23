@@ -1,16 +1,16 @@
 body {
-  margin: 0;
-  color: #172b4d;
-  background-color: #82b74b;
-  height: 100%;
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Noto Sans,
-    Ubuntu, Droid Sans, Helvetica Neue, sans-serif;
-  font-size: 14px;
-  line-height: 20px;
-  font-weight: 400;
+	margin: 0;
+	color: #172b4d;
+	background-color: rgb(75, 191, 107);
+	height: 100%;
+	font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Noto Sans,
+		Ubuntu, Droid Sans, Helvetica Neue, sans-serif;
+	font-size: 14px;
+	line-height: 20px;
+	font-weight: 400;
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
-    monospace;
+	font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+		monospace;
 }

@@ -24,14 +24,15 @@ class Label extends Component {
 	SelectedLabels() {
 		const labels = this.props.card.labels;
 		const labelStyle = {
-			height: this.state.smallLabel ? "1em" : "2em",
+			height: this.state.smallLabel ? "8px" : "2em",
 			width: "50px",
 			margin: "0 1px",
 		};
 		return (
 			<div>
 				{labels.map((label, index) => {
-					const className = "btn btn-xs disabled " + label;
+					const className =
+						"btn btn-xs disabled " + label + " card-label-small";
 					return (
 						<p key={index} className={className} style={labelStyle}>
 							{" "}
