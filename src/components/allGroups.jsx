@@ -117,17 +117,19 @@ class AllGroups extends Component {
 
 	render() {
 		const AllGroups = this.showAllGroups;
+		//const iconPlus = "U{002B};";
 		return (
 			<div className="d-flex" style={{ height: "100%" }}>
 				<span className="flex-columnx order-1">
 					{!this.state.add && (
 						<button
+							className="btn btn-light btn-sm add-group-button"
 							onClick={(e) => {
 								e.preventDefault();
 								this.setState({ add: true });
 							}}
 						>
-							Add group
+							&#43; Add another group
 						</button>
 					)}
 					{this.state.add && (

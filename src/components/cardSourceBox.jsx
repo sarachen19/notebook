@@ -135,7 +135,7 @@ export const CardSourceBox = ({ k, index, card, group, onCardsChange }) => {
 	drag(drop(ref));
 
 	const enter = (e) => {
-		e.currentTarget.style.backgroundColor = "#ebecf0";
+		e.currentTarget.style.backgroundColor = "#f4f5f7";
 	};
 	const leave = (e) => {
 		e.currentTarget.style.backgroundColor = "white";

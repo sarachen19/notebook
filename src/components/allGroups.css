@@ -14,7 +14,37 @@ div#root {
 	background-color: #6ebc6c;
 	height: 100%;
 }
-
+/*
+*css in allgroups class
+*/
+button.add-group-button {
+	background-color: hsla(0, 0%, 100%, 0.24);
+	cursor: pointer;
+	border-radius: 3px;
+	height: auto;
+	width: 200px;
+	min-height: 32px;
+	padding: 8px 2px;
+	color: #fff;
+	font-size: 16px;
+	border: none;
+	text-align: start;
+}
+button.add-group-button:hover {
+	background-color: hsla(0, 0%, 0%, 0.24);
+	color: #fff;
+}
+p.addcardtxt {
+	color: #5e6c84;
+	font-size: 14px;
+	letter-spacing: 0.04em;
+	margin: 2px 0;
+	padding: 8px;
+	border-radius: 3px;
+}
+p.addcardtxt:hover {
+	background-color: rgba(9, 30, 66, 0.08);
+}
 /*
 * css in group class 
 */
@@ -23,6 +53,14 @@ div.group-header {
 	position: relative;
 	min-height: 20px;
 	width: 100%;
+}
+a.group-dropdown-menu {
+	color: black;
+	font-size: 14px;
+	letter-spacing: 0.04em;
+}
+a.group-dropdown-menu:hover {
+	background-color: #ebeef1;
 }
 textarea#group-name-show {
 	width: 100%;
@@ -57,31 +95,63 @@ div.card-in-group {
 	max-width: 300px;
 	min-height: 20px;
 }
-div.card-in-group p {
-	margin: 5px 0 2px 0;
+/*
+* css in card class 
+*/
+span.card-icons-hide {
+	margin: 6px;
+	visibility: hidden;
+}
+span.card-icons-hide:hover {
+	color: #384d79;
+	border-radius: 3px;
+	opacity: 0.8;
+}
+p.card-cardname {
+	color: black;
+	font-size: 16px;
+	font-weight: 700;
+	letter-spacing: 0.04em;
+	margin: 6px;
+	padding: 0;
+	flex-grow: 1;
+	word-wrap: break-word;
+	overflow: auto;
 }
 /*
-css in checklist and editcard(todo)
+css in checklist and todo class
 */
-span.dot {
-	height: 6px;
-	width: 6px;
-	background-color: #bbb;
-	border-radius: 50%;
-	display: inline-block;
-	margin-right: 3px;
+div.card-checklist-hover-show-cursor:hover {
+	cursor: move;
+}
+
+p.card-checklistname {
+	color: black;
+	font-size: 14px;
+	font-weight: 500;
+	letter-spacing: 0.04em;
+	margin: 0;
+	padding: 0;
 }
 p.todo-text-indent {
 	text-indent: 1em;
 	display: block;
 	word-break: break-word;
+	color: #5e6c84;
+	font-size: 13px;
+	font-weight: 500;
+	letter-spacing: 0.04em;
+	margin: 0;
+	padding-bottom: 2px;
 }
 p.todo-text-indent:hover,
 li.todo-text-indent:hover {
 	opacity: 1;
 	transform: translate3d(5px, 0, 0);
 	transition: transform 0.3s ease-out, opacity 0.3s ease-out;
-	cursor: default;
+	cursor: text;
+	font-style: italic;
+	font-weight: 600;
 }
 
 /*
@@ -113,7 +183,7 @@ div#editCard-modal {
 	min-height: 600px;
 	max-width: 800px;
 }
-div#editCard-modal botton {
+div#editCard-modal button {
 	background-color: #5aac44;
 	box-shadow: none;
 	border: none;
@@ -185,6 +255,14 @@ div.div-u-gutter li.modal-todo {
 	margin: 0 10px;
 	padding: 7px 0;
 }
+div.div-u-gutter li.modal-todo:hover {
+	opacity: 1;
+	transform: translate3d(5px, 0, 0);
+	transition: transform 0.3s ease-out, opacity 0.3s ease-out;
+	cursor: text;
+	font-style: italic;
+	font-weight: 600;
+}
 div.div-u-gutter input.modal-todo-checkbox {
 	display: inline-block;
 	cursor: pointer;
@@ -214,6 +292,15 @@ div.modal-body-main div.div-u-gutter {
 	clear: both;
 }
 p.main-title {
+	font-weight: 600;
+	flex-grow: 1;
+}
+h5.edit-card-name:hover {
+	opacity: 0.7;
+	transform: translate3d(5px, 0, 0);
+	transition: transform 0.3s ease-out, opacity 0.3s ease-out;
+	cursor: text;
+	font-style: italic;
 	font-weight: 600;
 }
 div.label-and-duedate-div {

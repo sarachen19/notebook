@@ -5,7 +5,14 @@ import Form from "react-bootstrap/Form";
 import Overlay from "react-bootstrap/Overlay";
 import Popover from "react-bootstrap/Popover";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPager } from "@fortawesome/free-solid-svg-icons";
+import {
+	faAlignLeft,
+	faEdit,
+	faPager,
+	faEraser,
+	faTrash,
+	faWindowClose,
+} from "@fortawesome/free-solid-svg-icons";
 import OutsideClickHandler from "react-outside-click-handler";
 import autosize from "autosize";
 import "./allGroups.css";
@@ -32,6 +39,7 @@ class EditCard extends Component {
 			tempDescription: this.props.card.description,
 			newChecklist: "",
 			showModal: true,
+			editCardName: false,
 			editDescription: false,
 			addChecklist: false,
 			addLabel: false,
@@ -39,6 +47,10 @@ class EditCard extends Component {
 		};
 
 		this.handleCloseModal = this.handleCloseModal.bind(this);
+
+		this.editCardName = this.editCardName.bind(this);
+		this.onSubmitEditCardName = this.onSubmitEditCardName.bind(this);
+		this.editCardNameInputRef = React.createRef();
 
 		this.editDescription = this.editDescription.bind(this);
 		this.exitEditDescription = this.exitEditDescription.bind(this);
@@ -49,6 +61,7 @@ class EditCard extends Component {
 
 		this.coverRef = React.createRef();
 
+		this.onSubmitEditChecklistName = this.onSubmitEditChecklistName.bind(this);
 		this.addChecklist = this.addChecklist.bind(this);
 		this.onAddChecklists = this.onAddChecklists.bind(this);
 		this.ShowAddChecklist = this.ShowAddChecklist.bind(this);
@@ -74,7 +87,18 @@ class EditCard extends Component {
 		this.props.edit();
 		this.props.onCardsChange();
 	}
-
+	/*
+  --------------------edit card name handler--------------------
+  */
+	editCardName() {
+		this.setState({ editCardName: true });
+	}
+	onSubmitEditCardName(e) {
+		e.preventDefault();
+		const tempName = this.editCardNameInputRef.current.value;
+		this.props.card.value = tempName;
+		this.setState({ editCardName: false });
+	}
 	/*
   --------------------Description handler--------------------
   */
@@ -122,6 +146,75 @@ class EditCard extends Component {
 	/*
   --------------------Checklist handler--------------------
   */
+	checklistIcons(e, v) {
+		let temp = e.currentTarget.firstElementChild;
+		while (temp.nextElementSibling !== null) {
+			temp = temp.nextElementSibling;
+			temp.style.visibility = v;
+		}
+	}
+	editChecklist(e, checklist) {
+		const temp = e.currentTarget.parentElement.parentElement;
+		if (temp !== null) {
+			ReactDOM.render(
+				<OutsideClickHandler
+					onOutsideClick={(e) =>
+						this.cancelEditChecklistName(e, temp, checklist)
+					}
+				>
+					<form
+						className="hide-edit-checklist-form"
+						onSubmit={(e) => this.onSubmitEditChecklistName(e, temp, checklist)}
+					>
+						<input
+							type="text"
+							className="form-control"
+							defaultValue={checklist.checklistName}
+						></input>
+						<button className="btn btn-success btn-sm" type="submit">
+							Submit
+						</button>
+					</form>
+				</OutsideClickHandler>,
+				temp
+			);
+		}
+	}
+
+	cancelEditChecklistName(e, domElement, checklist) {
+		ReactDOM.unmountComponentAtNode(domElement);
+		ReactDOM.render(
+			<>
+				<p className="main-title">{checklist.checklistName}</p>
+				<span
+					className="card-icons-hide"
+					data-toggle="tooltip"
+					title="Edit checklist name"
+				>
+					<FontAwesomeIcon
+						icon={faAlignLeft}
+						onClick={(e) => this.editChecklist(e, checklist)}
+					/>
+				</span>
+				<span
+					className="card-icons-hide"
+					data-toggle="tooltip"
+					title="Delete checklist"
+				>
+					<FontAwesomeIcon icon={faEdit} />
+				</span>
+			</>,
+			domElement
+		);
+	}
+	onSubmitEditChecklistName(e, domElement, checklist) {
+		e.preventDefault();
+		const tempName = e.currentTarget.firstElementChild.value;
+		checklist.checklistName = tempName;
+		this.cancelEditChecklistName(e, domElement, checklist);
+		this.props.onCardsChange();
+	}
+	deleteChecklist(e, checklist, card) {}
 	onAddChecklists() {
 		this.setState({ addChecklist: false }); //增加结束 恢复默认值 参数传入Checklist
 	}
@@ -229,6 +322,7 @@ class EditCard extends Component {
 	/*
   --------------------one card's checklist and todo render--------------------
   */
+
 	Checklists() {
 		const checklists = this.props.card.checklists;
 		return checklists.map((checklist, index) => {
@@ -236,7 +330,35 @@ class EditCard extends Component {
 			return (
 				<div key={index} className="div-u-gutter">
 					<FontAwesomeIcon icon={faPager} className="modal-main-icon" />
-					<p className="main-title">{checklist.checklistName}</p>
+					<div
+						className="d-flex"
+						onMouseOver={(e) => this.checklistIcons(e, "visible")}
+						onMouseLeave={(e) => this.checklistIcons(e, "hidden")}
+					>
+						<p className="main-title">{checklist.checklistName}</p>
+						<span
+							className="card-icons-hide"
+							data-toggle="tooltip"
+							title="Edit checklist name"
+						>
+							<FontAwesomeIcon
+								icon={faAlignLeft}
+								onClick={(e) => this.editChecklist(e, checklist)}
+							/>
+						</span>
+						<span
+							className="card-icons-hide"
+							data-toggle="tooltip"
+							title="Delete checklist"
+						>
+							<FontAwesomeIcon
+								icon={faEdit}
+								onClick={(e) =>
+									this.deleteChecklist(e, checklist, this.props.card)
+								}
+							/>
+						</span>
+					</div>
 					{ProgressBar}
 					{checklist.todo.map((todo, index) => {
 						return (
@@ -502,7 +624,33 @@ class EditCard extends Component {
 					<Modal.Body>
 						<div className="modal-body-header">
 							<FontAwesomeIcon icon={faPager} className="modal-main-icon" />
-							<h5 className="main-title">{this.props.card.value}</h5>
+							{!this.state.editCardName && (
+								<h5
+									className="main-title edit-card-name"
+									onClick={this.editCardName}
+								>
+									{this.props.card.value}
+								</h5>
+							)}
+							{this.state.editCardName && (
+								<OutsideClickHandler
+									onOutsideClick={() => {
+										this.setState({ editCardName: false });
+									}}
+								>
+									<form onSubmit={this.onSubmitEditCardName}>
+										<input
+											type="text"
+											className="form-control"
+											defaultValue={this.props.card.value}
+											ref={this.editCardNameInputRef}
+										></input>
+										<button className="btn btn-success btn-sm" type="submit">
+											Submit
+										</button>
+									</form>
+								</OutsideClickHandler>
+							)}
 							<p id="edit-card-group-name">
 								in group {this.props.group.groupName}
 							</p>

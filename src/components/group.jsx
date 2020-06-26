@@ -95,7 +95,9 @@ class Group extends Component {
 							defaultValue=""
 						></input>
 						<br />
-						<button type="submit">Add</button>
+						<button type="submit" className="btn btn-success btn-sm">
+							Add
+						</button>
 					</form>
 				</OutsideClickHandler>
 			);
@@ -137,9 +139,17 @@ class Group extends Component {
 								}}
 							></Dropdown.Toggle>
 							<Dropdown.Menu>
-								<Dropdown.Item href="#">Action</Dropdown.Item>
-								<Dropdown.Item href="#">Another action</Dropdown.Item>
-								<Dropdown.Item href="#" onClick={this.deleteGroup}>
+								<Dropdown.Item href="#" className="group-dropdown-menu">
+									Action
+								</Dropdown.Item>
+								<Dropdown.Item href="#" className="group-dropdown-menu">
+									Another action
+								</Dropdown.Item>
+								<Dropdown.Item
+									href="#"
+									className="group-dropdown-menu"
+									onClick={this.deleteGroup}
+								>
 									Delete group
 								</Dropdown.Item>
 							</Dropdown.Menu>

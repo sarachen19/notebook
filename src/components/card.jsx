@@ -3,6 +3,7 @@ import OutsideClickHandler from "react-outside-click-handler";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
+	faAlignLeft,
 	faEdit,
 	faEraser,
 	faTrash,
@@ -76,7 +77,17 @@ class Card extends Component {
 		this.deleteCard = this.deleteCard.bind(this);
 		this.hideEditPane = this.hideEditPane.bind(this);
 	}
-
+	/*
+	 *--------------------------onhover show option icons--------------------------------
+	 */
+	showOptionIcons(e, type) {
+		const children = e.currentTarget.children;
+		Array.from(children)
+			.slice(1, children.length)
+			.forEach((child) => {
+				child.style.visibility = type;
+			});
+	}
 	/*
 	 *--------------------------edit card ( show modal )--------------------------------
 	 */
@@ -261,13 +272,14 @@ class Card extends Component {
 				>
 					{!this.state.showAddButton && (
 						<p
+							className="addcardtxt"
 							onClick={() => {
 								this.setState({
 									showAddButton: true,
 								});
 							}}
 						>
-							Add another card
+							&#43; Add another card
 						</p>
 					)}
 					{this.state.showAddButton && (
@@ -279,7 +291,9 @@ class Card extends Component {
 								defaultValue=""
 							></input>
 							<br />
-							<button type="submit">Add</button>
+							<button type="submit" className="btn btn-success btn-sm">
+								Add
+							</button>
 						</form>
 					)}
 				</OutsideClickHandler>
@@ -290,12 +304,24 @@ class Card extends Component {
 					<div style={style} onClick={() => this.popupEdit(this.props.card)}>
 						<p ref={this.coverRef} style={this.coverStyle}></p>
 						<Label smallLabel={true} card={this.props.card} />
-						<div className="d-flex flex-row-reverse justify-content-between">
-							<FontAwesomeIcon icon={faEdit} onClick={this.showEditPane} />
-							<p style={{ fontWeight: "bold" }}>{this.props.card.value}</p>
+						<div
+							className="d-flex"
+							onMouseOver={(e) => this.showOptionIcons(e, "visible")}
+							onMouseOut={(e) => this.showOptionIcons(e, "hidden")}
+						>
+							<p className="card-cardname">{this.props.card.value}</p>
+							<span
+								className="card-icons-hide"
+								data-toggle="tooltip"
+								data-html="true"
+								title={this.props.card.description}
+							>
+								<FontAwesomeIcon icon={faAlignLeft} />
+							</span>
+							<span className="card-icons-hide">
+								<FontAwesomeIcon icon={faEdit} onClick={this.showEditPane} />
+							</span>
 						</div>
-
-						<p>{this.props.card.description}</p>
 
 						{this.props.card.checklists.map((checklist, index) => {
 							return (
