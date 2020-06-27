@@ -65,6 +65,7 @@ class EditCard extends Component {
 		this.addChecklist = this.addChecklist.bind(this);
 		this.onAddChecklists = this.onAddChecklists.bind(this);
 		this.ShowAddChecklist = this.ShowAddChecklist.bind(this);
+		this.deleteChecklist = this.deleteChecklist.bind(this);
 		this.Checklists = this.Checklists.bind(this);
 		this.editTodoInput = React.createRef();
 
@@ -201,20 +202,37 @@ class EditCard extends Component {
 					data-toggle="tooltip"
 					title="Delete checklist"
 				>
-					<FontAwesomeIcon icon={faEdit} />
+					<FontAwesomeIcon
+						icon={faEdit}
+						onClick={(e) => this.deleteChecklist(e, checklist, this.props.card)}
+					/>
 				</span>
 			</>,
 			domElement
 		);
+		this.setState(this.state);
 	}
 	onSubmitEditChecklistName(e, domElement, checklist) {
 		e.preventDefault();
+		let tempck = checklist;
 		const tempName = e.currentTarget.firstElementChild.value;
-		checklist.checklistName = tempName;
-		this.cancelEditChecklistName(e, domElement, checklist);
-		this.props.onCardsChange();
+		tempck.checklistName = tempName;
+		this.cancelEditChecklistName(e, domElement, tempck);
+		checklist = tempck;
+		this.setState(this.state); //this.props.onCardsChange();
 	}
-	deleteChecklist(e, checklist, card) {}
+	deleteChecklist(e, checklist, card) {
+		if (
+			window.confirm(
+				"Checklist " + checklist.checklistName + " will be deleted."
+			)
+		) {
+			card.checklists = card.checklists.filter((value) => value !== checklist);
+			this.setState(this.state);
+			//this.forceUpdate();
+			//this.props.onCardsChange();
+		}
+	}
 	onAddChecklists() {
 		this.setState({ addChecklist: false }); //增加结束 恢复默认值 参数传入Checklist
 	}
@@ -272,20 +290,24 @@ class EditCard extends Component {
 		});
 		this.props.onCardsChange();
 	}
-	editTodo(checklist, todo, index) {
+	editTodo(checklist, todo, index1, index2) {
 		ReactDOM.render(
 			<OutsideClickHandler
 				onOutsideClick={() => {
 					ReactDOM.unmountComponentAtNode(
-						document.getElementById(checklist.key + "-" + index)
+						document.getElementById(index1 + "-" + index2)
 					);
 					ReactDOM.render(
 						todo.text,
-						document.getElementById(checklist.key + "-" + index)
+						document.getElementById(index1 + "-" + index2)
 					);
 				}}
 			>
-				<form onSubmit={(e) => this.editTodoSubmit(e, checklist, todo, index)}>
+				<form
+					onSubmit={(e) =>
+						this.editTodoSubmit(e, checklist, todo, index1, index2)
+					}
+				>
 					<input
 						type="text"
 						defaultValue={todo.text}
@@ -296,26 +318,23 @@ class EditCard extends Component {
 					</button>
 				</form>
 			</OutsideClickHandler>,
-			document.getElementById(checklist.key + "-" + index)
+			document.getElementById(index1 + "-" + index2)
 		);
 	}
-	editTodoSubmit(e, checklist, todo, todoIndex) {
+	editTodoSubmit(e, checklist, todo, index1, index2) {
 		e.preventDefault();
 		const tempTodo = this.editTodoInput.current.value;
-		const targetId = checklist.key + "-" + todoIndex;
+		const targetId = index1 + "-" + index2;
 		checklist.todo.forEach((value, index) => {
-			const tempId = checklist.key + "-" + index;
+			const tempId = index1 + "-" + index;
 			if (tempId === targetId) {
 				checklist.todo[index].text = tempTodo;
 			}
 		});
 		ReactDOM.unmountComponentAtNode(
-			document.getElementById(checklist.key + "-" + todoIndex)
+			document.getElementById(index1 + "-" + index2)
 		);
-		ReactDOM.render(
-			tempTodo,
-			document.getElementById(checklist.key + "-" + todoIndex)
-		);
+		ReactDOM.render(tempTodo, document.getElementById(index1 + "-" + index2));
 		this.props.onCardsChange();
 	}
 
@@ -325,10 +344,10 @@ class EditCard extends Component {
 
 	Checklists() {
 		const checklists = this.props.card.checklists;
-		return checklists.map((checklist, index) => {
+		return checklists.map((checklist, index1) => {
 			const ProgressBar = this.ProgessBar(checklist);
 			return (
-				<div key={index} className="div-u-gutter">
+				<div key={index1} className="div-u-gutter">
 					<FontAwesomeIcon icon={faPager} className="modal-main-icon" />
 					<div
 						className="d-flex"
@@ -360,19 +379,19 @@ class EditCard extends Component {
 						</span>
 					</div>
 					{ProgressBar}
-					{checklist.todo.map((todo, index) => {
+					{checklist.todo.map((todo, index2) => {
 						return (
-							<div key={index}>
+							<div key={index2}>
 								<input
 									className="modal-todo-checkbox"
 									type="checkbox"
-									onClick={() => this.toggleTodo(checklist, todo, index)}
+									onClick={() => this.toggleTodo(checklist, todo, index2)}
 									defaultChecked={todo.finished}
 								></input>
 								<li
 									className="modal-todo"
-									onClick={() => this.editTodo(checklist, todo, index)}
-									id={checklist.key + "-" + index}
+									onClick={() => this.editTodo(checklist, todo, index1, index2)}
+									id={index1 + "-" + index2}
 									style={{
 										textDecoration: todo.finished ? "line-through" : "none",
 									}}

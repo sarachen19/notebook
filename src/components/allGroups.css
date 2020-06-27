@@ -188,6 +188,7 @@ div#editCard-modal button {
 	box-shadow: none;
 	border: none;
 	color: #fff;
+	z-index: 99;
 }
 div.modal-header {
 	padding: 0;

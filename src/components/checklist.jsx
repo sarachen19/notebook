@@ -5,7 +5,7 @@ class Checklist extends Component {
 		super(props);
 		this.state = {
 			newChecklist: {
-				key: this.props.card.checklists.length,
+				//key: this.props.card.checklists.length,
 				checklistName: "",
 				todo: [],
 			},
