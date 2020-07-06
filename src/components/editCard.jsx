@@ -154,13 +154,13 @@ class EditCard extends Component {
 			temp.style.visibility = v;
 		}
 	}
-	editChecklist(e, checklist) {
+	editChecklist(e, checklist, index1) {
 		const temp = e.currentTarget.parentElement.parentElement;
 		if (temp !== null) {
 			ReactDOM.render(
 				<OutsideClickHandler
 					onOutsideClick={(e) =>
-						this.cancelEditChecklistName(e, temp, checklist)
+						this.cancelEditChecklistName(e, temp, checklist, index1)
 					}
 				>
 					<form
@@ -182,11 +182,13 @@ class EditCard extends Component {
 		}
 	}
 
-	cancelEditChecklistName(e, domElement, checklist) {
-		ReactDOM.unmountComponentAtNode(domElement);
+	cancelEditChecklistName(e, domElement, checklist, index1) {
+		//ReactDOM.unmountComponentAtNode(domElement);
 		ReactDOM.render(
 			<>
-				<p className="main-title">{checklist.checklistName}</p>
+				<p key={index1} className="main-title">
+					{checklist.checklistName}
+				</p>
 				<span
 					className="card-icons-hide"
 					data-toggle="tooltip"
@@ -204,13 +206,14 @@ class EditCard extends Component {
 				>
 					<FontAwesomeIcon
 						icon={faEdit}
-						onClick={(e) => this.deleteChecklist(e, checklist, this.props.card)}
+						onClick={(e) =>
+							this.deleteChecklist(e, checklist, this.props.card, domElement)
+						}
 					/>
 				</span>
 			</>,
 			domElement
 		);
-		this.setState(this.state);
 	}
 	onSubmitEditChecklistName(e, domElement, checklist) {
 		e.preventDefault();
@@ -221,13 +224,17 @@ class EditCard extends Component {
 		checklist = tempck;
 		this.setState(this.state); //this.props.onCardsChange();
 	}
-	deleteChecklist(e, checklist, card) {
+	deleteChecklist(e, checklist, card, domElement) {
+		e.preventDefault();
 		if (
 			window.confirm(
 				"Checklist " + checklist.checklistName + " will be deleted."
 			)
 		) {
-			card.checklists = card.checklists.filter((value) => value !== checklist);
+			this.props.card.checklists = this.props.card.checklists.filter(
+				(value) => value !== checklist
+			);
+			//ReactDOM.unmountComponentAtNode(domElement.parentElement);
 			this.setState(this.state);
 			//this.forceUpdate();
 			//this.props.onCardsChange();
@@ -350,11 +357,14 @@ class EditCard extends Component {
 				<div key={index1} className="div-u-gutter">
 					<FontAwesomeIcon icon={faPager} className="modal-main-icon" />
 					<div
+						key={index1}
 						className="d-flex"
 						onMouseOver={(e) => this.checklistIcons(e, "visible")}
 						onMouseLeave={(e) => this.checklistIcons(e, "hidden")}
 					>
-						<p className="main-title">{checklist.checklistName}</p>
+						<p key={index1} className="main-title">
+							{checklist.checklistName}
+						</p>
 						<span
 							className="card-icons-hide"
 							data-toggle="tooltip"
@@ -362,7 +372,7 @@ class EditCard extends Component {
 						>
 							<FontAwesomeIcon
 								icon={faAlignLeft}
-								onClick={(e) => this.editChecklist(e, checklist)}
+								onClick={(e) => this.editChecklist(e, checklist, index1)}
 							/>
 						</span>
 						<span
